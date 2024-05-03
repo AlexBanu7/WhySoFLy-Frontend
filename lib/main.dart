@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home/home.dart';
+import 'package:frontend/utils/session_requests.dart';
+
+import 'models/user.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+User? currentUser;
+Session session_requests = Session();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
