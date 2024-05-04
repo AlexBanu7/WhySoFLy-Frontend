@@ -68,15 +68,21 @@ class _CustomDrawer extends State<CustomDrawer>
             ),
           ),
           ListTile(
-            title: const Text('Item 1'),
+            title: const Text('Home'),
             onTap: () {
-              // Implement item 1 functionality here
+              Navigator.pushNamed(context, "/");
             },
           ),
           ListTile(
-            title: const Text('Item 2'),
+            title: const Text('Map'),
             onTap: () {
-              // Implement item 2 functionality here
+              Navigator.pushNamed(context, "/map");
+            },
+          ),
+          ListTile(
+            title: const Text('How to'),
+            onTap: () {
+              Navigator.pushNamed(context, "/howto");
             },
           ),
           // Add more ListTile widgets for additional menu items

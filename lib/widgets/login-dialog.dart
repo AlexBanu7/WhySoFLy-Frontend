@@ -28,13 +28,13 @@ class _LoginDialog extends State<LoginDialog>
     };
 
     var response = await session_requests.post(
-      'http://192.168.1.103:5229/login?useCookies=true&useSessionCookies=true',
+      '/login?useCookies=true&useSessionCookies=true',
       json.encode(data),
     );
 
     if (response.statusCode == 200) {
       var response = await session_requests.post(
-        'http://192.168.1.103:5229/identity/userInfo',
+        '/identity/userInfo',
         json.encode(email),
       );
       if (response.statusCode == 200) {

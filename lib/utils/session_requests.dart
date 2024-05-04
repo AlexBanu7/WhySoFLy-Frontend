@@ -5,14 +5,16 @@ import 'package:http/http.dart' as http;
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  Future<http.Response> get(String url) async {
-    http.Response response = await http.get(Uri.parse(url), headers: headers);
+  String base_url = 'http://192.168.1.103:5229';
+
+  Future<http.Response> get(String path) async {
+    http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
     updateCookie(response);
     return response;
   }
 
-  Future<http.Response> post(String url, dynamic data) async {
-    http.Response response = await http.post(Uri.parse(url), body: data, headers: headers);
+  Future<http.Response> post(String path, dynamic data) async {
+    http.Response response = await http.post(Uri.parse(base_url+path), body: data, headers: headers);
     updateCookie(response);
     return response;
   }

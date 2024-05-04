@@ -6,6 +6,12 @@ import '../main.dart';
 import 'logout-dialog.dart';
 
 class CustomAppBar extends AppBar {
+
+  String _custom_title = "";
+  CustomAppBar(String customTitle){
+    _custom_title = customTitle;
+  }
+
   @override
   _CustomAppBar createState() => _CustomAppBar();
 }
@@ -67,6 +73,8 @@ class _CustomAppBar extends State<CustomAppBar>
       iconTheme: const IconThemeData(
         size: 40, // Adjust the size as per your requirement
       ),
+      title: Text(widget._custom_title),
+      centerTitle: true,
       actions: [
         profile_icon
       ],
