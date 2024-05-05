@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/cart/cart.dart';
 import 'package:frontend/screens/home/home.dart';
 import 'package:frontend/screens/howto/howto.dart';
 import 'package:frontend/screens/map/map.dart';
+import 'package:frontend/utils/cart_service.dart';
 import 'package:frontend/utils/session_requests.dart';
 
 import 'models/user.dart';
@@ -11,6 +13,7 @@ void main() {
 }
 
 User? currentUser;
+CartService cartService = CartService();
 Session session_requests = Session();
 
 class MyApp extends StatelessWidget {
@@ -27,7 +30,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(),
         '/map': (context) => const MapScreen(),
-        '/howto': (context) => const HowToScreen()
+        '/howto': (context) => const HowToScreen(),
+        '/cart': (context) => const CartPage()
       },
     );
   }
