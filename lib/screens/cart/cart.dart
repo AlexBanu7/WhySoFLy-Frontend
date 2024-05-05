@@ -21,6 +21,8 @@ class CartPage extends StatefulWidget {
 class _CartPage extends State<CartPage>
     with SingleTickerProviderStateMixin{
 
+  int counter = 0;
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +38,11 @@ class _CartPage extends State<CartPage>
     return Scaffold(
       appBar: CustomAppBar("Your Shopping Cart"),
       drawer: CustomDrawer(),
-      body: cartService.cartitems.isNotEmpty ? const FilledCart() : const EmptyCart()
+      body: cartService.cartitems.isNotEmpty ? FilledCart(onUpdate: () {
+        setState(() {
+          counter++;
+        });
+      }) : const EmptyCart()
     );
   }
 }

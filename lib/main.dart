@@ -5,6 +5,7 @@ import 'package:frontend/screens/howto/howto.dart';
 import 'package:frontend/screens/map/map.dart';
 import 'package:frontend/utils/cart_service.dart';
 import 'package:frontend/utils/session_requests.dart';
+import 'package:frontend/utils/temp_inits.dart';
 
 import 'models/user.dart';
 
@@ -15,6 +16,7 @@ void main() {
 User? currentUser;
 CartService cartService = CartService();
 Session session_requests = Session();
+TempInits tempInits = TempInits();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

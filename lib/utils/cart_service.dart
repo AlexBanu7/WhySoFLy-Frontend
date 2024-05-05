@@ -1,143 +1,16 @@
+import 'dart:math';
+
 import 'package:frontend/models/cartitem.dart';
 
 import '../models/product.dart';
 
 class CartService {
 
+  int? marketId;
+  double volume = 300; // in liters
   List<CartItem> cartitems = [CartItem(
       id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  ),CartItem(
-      id:1,
+      productId: 132,
       name: "Potato",
       quantity: 1.2,
       volume: 60,
@@ -145,19 +18,42 @@ class CartService {
   )];
 
   CartService() {
-    print("Created a cart!");
     // Create Cart for currentUser
   }
 
   void clearCart() {
-    print("Cleared the cart!");
     // clears the cart
+    marketId = null;
+    cartitems = [];
   }
 
-  void addToCart(CartItem cartitem) {
-    cartitems.add(cartitem);
-    print("Added ${cartitem.name} to cart");
-    // Adds to cart
+  void addToCart(Product product, double quantity) {
+    // Validate same market ordering
+    if (product.marketId != marketId) {
+      throw Exception("Not the same market! Clear cart first");
+    }
+    // Ensure Volume is not exceeded
+    if (computeVolumeLeft() - quantity * product.volumePerQuantity < 0){
+      throw Exception("Cannot add the item! Volume will be exceeded");
+    }
+    // Add to cart
+    if (!cartitems.any((cartitem) => cartitem.productId == product.id)) {
+      CartItem cartItem = CartItem(
+          id:Random().nextInt(9999),
+          productId: product.id,
+          name: product.name,
+          quantity: quantity,
+          volume: quantity * product.volumePerQuantity,
+          price: quantity * product.pricePerQuantity
+      );
+      cartitems.add(cartItem);
+    } else {
+      int existing_index = cartitems.indexWhere((cartitem) => cartitem.productId == product.id);
+      CartItem cartItemToModify = cartitems[existing_index];
+      cartItemToModify.quantity += quantity;
+      cartItemToModify.volume += quantity * product.volumePerQuantity;
+      cartItemToModify.price += quantity * product.pricePerQuantity;
+    }
   }
   
   void removeFromCart(CartItem cartitem) {
@@ -175,7 +71,7 @@ class CartService {
 
   double computeVolumeLeft() {
     // TODO: Get from API
-    double volumeLeft = 300; // in litters
+    double volumeLeft = volume;
     for (var cartitem in cartitems){
       volumeLeft -= cartitem.volume;
     }

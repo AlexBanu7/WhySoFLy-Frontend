@@ -1,5 +1,6 @@
 class CartItem {
   int id;
+  int productId;
   String name;
   double quantity; // number of items/kg
   double volume;
@@ -7,6 +8,7 @@ class CartItem {
 
   CartItem({
     required this.id,
+    required this.productId,
     required this.name,
     required this.quantity,
     required this.volume,

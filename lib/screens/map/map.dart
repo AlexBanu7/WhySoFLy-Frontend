@@ -46,21 +46,22 @@ class _MapScreenState extends State<MapScreen> {
 
   void _populate_markers() {
     // TODO: Replace with api call
-    LatLng position = LatLng(45.7489, 21.23);
     Set<Marker> _new_markers = {};
-    _new_markers.add(
-        Marker(
-          markerId: MarkerId(position.toString()),
-          position: position,
-          infoWindow: InfoWindow(
-            title: 'Order at Fake Lidl',
-            onTap: () {
-              print("Trapped!");
-            }
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-        )
-    );
+    for (var market in tempInits.markets) {
+      _new_markers.add(
+          Marker(
+            markerId: MarkerId(market.location.toString()),
+            position: market.location,
+            infoWindow: InfoWindow(
+                title: 'Order at ${market.name}',
+                onTap: () {
+                  print("Trapped!");
+                }
+            ),
+            icon: BitmapDescriptor.defaultMarker,
+          )
+      );
+    }
     setState(() {
       _markers = _new_markers;
     });

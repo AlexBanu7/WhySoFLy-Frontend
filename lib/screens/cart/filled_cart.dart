@@ -10,7 +10,9 @@ import '../../widgets/custom_drawer.dart';
 
 
 class FilledCart extends StatefulWidget {
-  const FilledCart({super.key});
+  const FilledCart({required this.onUpdate});
+
+  final VoidCallback onUpdate;
 
   @override
   State<FilledCart> createState() => _FilledCart();
@@ -55,6 +57,15 @@ class _FilledCart extends State<FilledCart>
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
+                    "Volume",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ), // Replace YourFourthWidget with your actual widget
+                ), // Replace YourThirdWidget with your actual widget
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
                     "Price",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ), // Replace YourFourthWidget with your actual widget
@@ -77,29 +88,62 @@ class _FilledCart extends State<FilledCart>
                           IconButton(
                             icon: Icon(Icons.delete_outline),
                             // You can use any delete icon you prefer
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: const Text(
+                                        "Delete Item?",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              cartService.removeFromCart(cartitem);
+                                              Navigator.pop(context);
+                                              widget.onUpdate();
+                                            },
+                                            child: const Text('Yes'),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('No'),
+                                          )
+                                        ],
+                                      )
+                                  );
+                                },
+                              );
+                            },
                             iconSize: 25.0,
                             // Adjust the size as needed
-                            color: Colors
-                                .red, // Customize the color of the icon
-                          ), // Replace YourFirstWidget with your actual widget
+                            color: Colors.red,
+                          ),
                           Padding(
                             padding: EdgeInsets.only(left: 10),
-                            child: Text(cartitem
-                                .name), // Replace YourSecondWidget with your actual widget
+                            child: Text(cartitem.name),
                           ),
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: Text(cartitem.quantity
-                                  .toString()), // Replace YourFourthWidget with your actual widget
-                            ), // Replace YourThirdWidget with your actual widget
+                              child: Text(cartitem.quantity.toString()),
+                            ),
                           ),
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: Text(cartitem.price
-                                  .toString()), // Replace YourFourthWidget with your actual widget
+                              child: Text(cartitem.volume.toString()),
+                            ),
+                          ),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(cartitem.price.toString()),
                             ),
                           ),
                         ]
