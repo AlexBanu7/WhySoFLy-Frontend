@@ -7,11 +7,8 @@ import 'package:frontend/models/user.dart';
 class AddToCartDialog extends StatefulWidget {
 
   final Product product;
-  final int productsExpandedIndex;
-  final int categoriesExpandedIndex;
-  final void Function(int, int) updatedExpansionIndexes;
 
-  const AddToCartDialog({super.key, required this.product, required this.updatedExpansionIndexes, required this.productsExpandedIndex, required this.categoriesExpandedIndex});
+  const AddToCartDialog({super.key, required this.product});
 
   @override
   _AddToCartDialog createState() => _AddToCartDialog();
@@ -82,10 +79,6 @@ class _AddToCartDialog extends State<AddToCartDialog>
                 if (_formKey.currentState!.validate()) {
                   cartService.addToCart(widget.product, selectedQuantity);
                   Navigator.pop(context);
-                  widget.updatedExpansionIndexes(
-                    widget.categoriesExpandedIndex,
-                    widget.productsExpandedIndex
-                  );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Product has been successfully added!')),
                   );

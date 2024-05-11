@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/category.dart';
@@ -28,9 +28,10 @@ class TempInits {
       name: "Potatoes",
       marketId: market.id,
       categoryId: category.id,
-      soldByWeight: 0,
+      soldByWeight: 1,
       volumePerQuantity: 1.5,
-      pricePerQuantity: 4.99
+      pricePerQuantity: 4.99,
+      image: 'assets/images/home-footer.png'
     )];
     category.products = products;
   }

@@ -4,6 +4,7 @@ import 'package:accordion/accordion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/order/add_to_cart_dialog.dart';
+import 'package:frontend/screens/order/product_details_dialog.dart';
 
 import '../../models/category.dart';
 import '../../models/product.dart';
@@ -83,14 +84,12 @@ class _ProductsAccordion extends State<ProductsAccordion>
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
+                      widget.updatedExpansionIndexes(widget.categoriesExpandedIndex, index);
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AddToCartDialog(
                               product: product,
-                              productsExpandedIndex: index,
-                              categoriesExpandedIndex: widget.categoriesExpandedIndex,
-                              updatedExpansionIndexes: widget.updatedExpansionIndexes
                           );
                         },
                       );
@@ -120,7 +119,15 @@ class _ProductsAccordion extends State<ProductsAccordion>
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      // Handle button tap
+                      widget.updatedExpansionIndexes(widget.categoriesExpandedIndex, index);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ProductDetailsDialog(
+                            product: product,
+                          );
+                        },
+                      );
                     },
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
