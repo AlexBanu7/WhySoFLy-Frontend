@@ -1,17 +1,13 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
-import 'package:frontend/models/user.dart';
-import 'package:http/http.dart' as http;
 
 import '../main.dart';
-import '../utils/session_requests.dart';
 
 class LogoutDialog extends StatefulWidget {
 
   final VoidCallback onUpdate;
 
-  const LogoutDialog({required this.onUpdate});
+  const LogoutDialog({super.key, required this.onUpdate});
 
   @override
   _LogoutDialog createState() => _LogoutDialog();

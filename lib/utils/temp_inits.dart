@@ -15,7 +15,7 @@ class TempInits {
     markets = [Market(
       id: Random().nextInt(9999),
       name: "Fake Lidl",
-      location: LatLng(45.7489, 21.23)
+      location: const LatLng(45.7489, 21.23)
     )];
     Market market = markets[0];
     categories = [Category(
@@ -28,8 +28,10 @@ class TempInits {
       name: "Potatoes",
       marketId: market.id,
       categoryId: category.id,
+      soldByWeight: 0,
       volumePerQuantity: 1.5,
       pricePerQuantity: 4.99
     )];
+    category.products = products;
   }
 }

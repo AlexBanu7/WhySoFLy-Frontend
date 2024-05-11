@@ -17,8 +17,8 @@ class CartService {
       price: 5.99
   )];
 
-  CartService() {
-    // Create Cart for currentUser
+  CartService(_marketId) {
+    marketId = _marketId;
   }
 
   void clearCart() {
@@ -27,7 +27,7 @@ class CartService {
     cartitems = [];
   }
 
-  void addToCart(Product product, double quantity) {
+  void addToCart(Product product, num quantity) {
     // Validate same market ordering
     if (product.marketId != marketId) {
       throw Exception("Not the same market! Clear cart first");
@@ -48,8 +48,8 @@ class CartService {
       );
       cartitems.add(cartItem);
     } else {
-      int existing_index = cartitems.indexWhere((cartitem) => cartitem.productId == product.id);
-      CartItem cartItemToModify = cartitems[existing_index];
+      int existingIndex = cartitems.indexWhere((cartitem) => cartitem.productId == product.id);
+      CartItem cartItemToModify = cartitems[existingIndex];
       cartItemToModify.quantity += quantity;
       cartItemToModify.volume += quantity * product.volumePerQuantity;
       cartItemToModify.price += quantity * product.pricePerQuantity;

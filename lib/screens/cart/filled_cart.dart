@@ -1,16 +1,12 @@
 import 'dart:core';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:frontend/main.dart';
 
-import '../../widgets/custom_appbar.dart';
-import '../../widgets/custom_drawer.dart';
 
 
 class FilledCart extends StatefulWidget {
-  const FilledCart({required this.onUpdate});
+  const FilledCart({super.key, required this.onUpdate});
 
   final VoidCallback onUpdate;
 
@@ -26,23 +22,18 @@ class _FilledCart extends State<FilledCart>
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   List<Widget> get_children() {
-    List<Widget> cart_items_to_children = [
+    List<Widget> cartItemsToChildren = [
       const Padding(
-        padding: EdgeInsets.only(bottom: 10, top: 10, right: 30, left: 80),
+        padding: EdgeInsets.only(bottom: 10, top: 10, right: 25, left: 80),
         child: Row(
-            children: [ // Replace YourFirstWidget with your actual widget
-              Padding(
-                padding: EdgeInsets.only(right:30),
+            children: [
+              Expanded(
                 child: Text(
                   "Name",
                   style: TextStyle(fontWeight: FontWeight.bold),
-                ), // Replace YourSecondWidget with your actual widget
+                ),
               ),
               Expanded(
                 child: Align(
@@ -76,17 +67,17 @@ class _FilledCart extends State<FilledCart>
       )
     ];
     for (var cartitem in cartService.cartitems) {
-      cart_items_to_children.add(
+      cartItemsToChildren.add(
           Padding(
-              padding: EdgeInsets.only(top: 5, left: 10, right: 10),
+              padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
               child: Card(
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         bottom: 10, top: 10, right: 10, left: 10),
                     child: Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.delete_outline),
+                            icon: const Icon(Icons.delete_outline),
                             // You can use any delete icon you prefer
                             onPressed: () {
                               showDialog(
@@ -124,26 +115,28 @@ class _FilledCart extends State<FilledCart>
                             // Adjust the size as needed
                             color: Colors.red,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(cartitem.name),
-                          ),
                           Expanded(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(cartitem.quantity.toString()),
+                            child:Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(cartitem.name),
                             ),
                           ),
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: Text(cartitem.volume.toString()),
+                              child: Text(cartitem.quantity.toStringAsFixed(2)),
                             ),
                           ),
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: Text(cartitem.price.toString()),
+                              child: Text(cartitem.volume.toStringAsFixed(2)),
+                            ),
+                          ),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(cartitem.price.toStringAsFixed(2)),
                             ),
                           ),
                         ]
@@ -153,14 +146,14 @@ class _FilledCart extends State<FilledCart>
           )
       );
     }
-    return cart_items_to_children;
+    return cartItemsToChildren;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height - 300,
           child: ShaderMask(
             shaderCallback: (Rect rect) {
@@ -180,7 +173,7 @@ class _FilledCart extends State<FilledCart>
         Expanded(
           child:Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top:20, bottom:30, left:20, right: 20),
+            padding: const EdgeInsets.only(top:20, bottom:30, left:20, right: 20),
             child: Column(
               children: <Widget>[
                 Align(
@@ -189,20 +182,20 @@ class _FilledCart extends State<FilledCart>
                     children: <Widget>[
                       Text(
                         'Total Price: ${cartService.calculateTotalPrice().toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 22.0),
+                        style: const TextStyle(fontSize: 22.0),
                       ),
                       Text(
                         'Volume Left: ${cartService.computeVolumeLeft().toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 22.0),
+                        style: const TextStyle(fontSize: 22.0),
                       ),
                     ],
                   ),
                 ),
-                Spacer(), // Add space between the text and button
+                const Spacer(), // Add space between the text and button
                 Center(
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text('Checkout'),
+                    child: const Text('Checkout'),
                   ),
                 ),
               ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
@@ -36,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBar(""),
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -80,9 +79,9 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
               ),
               // Main content
-              Center(
+              const Center(
                 child: Padding(
-                    padding: const EdgeInsets.only(bottom: 200.0), // Adjust as needed
+                    padding: EdgeInsets.only(bottom: 200.0), // Adjust as needed
                     child: AnimatedSizeImage()
                 ),
               ),

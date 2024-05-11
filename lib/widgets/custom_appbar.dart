@@ -8,7 +8,7 @@ import 'logout-dialog.dart';
 class CustomAppBar extends AppBar {
 
   String _custom_title = "";
-  CustomAppBar(String customTitle){
+  CustomAppBar(String customTitle, {super.key}){
     _custom_title = customTitle;
   }
 
@@ -28,7 +28,7 @@ class _CustomAppBar extends State<CustomAppBar>
 
   @override
   Widget build(BuildContext context) {
-    IconButton profile_icon = currentUser != null ?
+    IconButton profileIcon = currentUser != null ?
       IconButton(
         icon: SvgPicture.asset(
           'assets/icons/log-out.svg',
@@ -63,7 +63,7 @@ class _CustomAppBar extends State<CustomAppBar>
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return LoginDialog();
+              return const LoginDialog();
             },
           );
         },
@@ -76,13 +76,9 @@ class _CustomAppBar extends State<CustomAppBar>
       title: Text(widget._custom_title),
       centerTitle: true,
       actions: [
-        profile_icon
+        profileIcon
       ],
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

@@ -1,12 +1,7 @@
 import 'dart:core';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:frontend/main.dart';
 
-import '../../widgets/custom_appbar.dart';
-import '../../widgets/custom_drawer.dart';
 
 
 class EmptyCart extends StatefulWidget {
@@ -19,10 +14,6 @@ class EmptyCart extends StatefulWidget {
 class _EmptyCart extends State<EmptyCart>
     with SingleTickerProviderStateMixin{
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

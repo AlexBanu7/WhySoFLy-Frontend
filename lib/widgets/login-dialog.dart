@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
-import 'package:http/http.dart' as http;
 
 import '../main.dart';
-import '../utils/session_requests.dart';
 
 class LoginDialog extends StatefulWidget {
+  const LoginDialog({super.key});
+
   @override
   _LoginDialog createState() => _LoginDialog();
 }

@@ -1,8 +1,6 @@
 import 'dart:core';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/screens/cart/empty_cart.dart';
 import 'package:frontend/screens/cart/filled_cart.dart';
@@ -28,16 +26,12 @@ class _CartPage extends State<CartPage>
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar("Your Shopping Cart"),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: cartService.cartitems.isNotEmpty ? FilledCart(onUpdate: () {
         setState(() {
           counter++;

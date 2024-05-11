@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../main.dart';
@@ -31,7 +29,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar("Map"),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: GoogleMap(
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
@@ -46,16 +44,16 @@ class _MapScreenState extends State<MapScreen> {
 
   void _populate_markers() {
     // TODO: Replace with api call
-    Set<Marker> _new_markers = {};
+    Set<Marker> newMarkers = {};
     for (var market in tempInits.markets) {
-      _new_markers.add(
+      newMarkers.add(
           Marker(
             markerId: MarkerId(market.location.toString()),
             position: market.location,
             infoWindow: InfoWindow(
                 title: 'Order at ${market.name}',
                 onTap: () {
-                  print("Trapped!");
+                  Navigator.pushNamed(context, '/order', arguments: market.name);
                 }
             ),
             icon: BitmapDescriptor.defaultMarker,
@@ -63,7 +61,7 @@ class _MapScreenState extends State<MapScreen> {
       );
     }
     setState(() {
-      _markers = _new_markers;
+      _markers = newMarkers;
     });
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AnimatedSizeImage extends StatefulWidget {
+  const AnimatedSizeImage({super.key});
+
   @override
   _AnimatedSizeImageState createState() => _AnimatedSizeImageState();
 }
@@ -15,7 +17,7 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5), // Adjust duration as needed
+      duration: const Duration(seconds: 5), // Adjust duration as needed
     )..repeat(reverse: true);
   }
 

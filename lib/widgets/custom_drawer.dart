@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../main.dart';
-import '../models/user.dart';
 
 class CustomDrawer extends StatefulWidget {
+  const CustomDrawer({super.key});
+
   @override
   _CustomDrawer createState() => _CustomDrawer();
 }
@@ -29,11 +30,11 @@ class _CustomDrawer extends State<CustomDrawer>
         ),
         Text(
           currentUser!.email,
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
         ),
         Text(
           currentUser!.role,
-          style: TextStyle(fontSize: 20),
+          style: const TextStyle(fontSize: 20),
         ),
       ]);
     } else {
@@ -55,8 +56,8 @@ class _CustomDrawer extends State<CustomDrawer>
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Container(
-            height: 280,
+          SizedBox(
+            height: 300,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: currentUser != null ? Colors.lightBlueAccent : Colors.black12,
@@ -97,8 +98,4 @@ class _CustomDrawer extends State<CustomDrawer>
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

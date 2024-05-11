@@ -2,7 +2,7 @@ class CartItem {
   int id;
   int productId;
   String name;
-  double quantity; // number of items/kg
+  num quantity; // number of items/kg
   double volume;
   double price;
 

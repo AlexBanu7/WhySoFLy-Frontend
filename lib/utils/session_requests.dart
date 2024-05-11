@@ -1,11 +1,10 @@
-import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  String base_url = 'http://192.168.1.103:5229';
+  String base_url = 'http://192.168.0.142:5229';
 
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
