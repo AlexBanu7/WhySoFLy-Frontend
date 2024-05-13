@@ -2,9 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../models/category.dart';
-import '../models/market.dart';
-import '../models/product.dart';
+import 'package:frontend/models/category.dart';
+import 'package:frontend/models/market.dart';
+import 'package:frontend/models/product.dart';
 
 class TempInits {
   List<Market> markets = [];

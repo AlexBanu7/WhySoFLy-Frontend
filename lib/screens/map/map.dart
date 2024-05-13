@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
 import '../../main.dart';
 import '../../widgets/custom_appbar.dart';
@@ -15,8 +16,18 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  final Completer<GoogleMapController> _controller =
-  Completer<GoogleMapController>();
+  GoogleMapController? controller;
+
+  AndroidMapRenderer? _initializedRenderer;
+
+  @override
+  void initState() {
+    initializeMapRenderer()
+        .then<void>((AndroidMapRenderer? initializedRenderer) => setState(() {
+      _initializedRenderer = initializedRenderer;
+    }));
+    super.initState();
+  }
 
   Set<Marker> _markers = {};
 
@@ -28,13 +39,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Map"),
       drawer: const CustomDrawer(),
       body: GoogleMap(
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _populate_markers();
-          _controller.complete(controller);
+          _onMapCreated(controller);
         },
         cloudMapId: 'bab3d6c7b6649b31',
         markers: _markers, // Call _addMarker when user taps on the map
@@ -62,6 +74,12 @@ class _MapScreenState extends State<MapScreen> {
     }
     setState(() {
       _markers = newMarkers;
+    });
+  }
+
+  void _onMapCreated(GoogleMapController controllerParam) {
+    setState(() {
+      controller = controllerParam;
     });
   }
 }

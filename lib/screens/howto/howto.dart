@@ -15,6 +15,7 @@ class _HowToScreen extends State<HowToScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("How To"),
       drawer: const CustomDrawer(),
       body: const Text("To be implemented!")

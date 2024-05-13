@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
+import 'package:frontend/widgets/singup-dialog.dart';
 
 import '../main.dart';
 
@@ -88,7 +89,15 @@ class _LoginDialog extends State<LoginDialog>
           ),
           const SizedBox(height: 16.0),
           ElevatedButton(
-            onPressed: _login,
+            onPressed: () {
+              Navigator.pop(context);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const SignupDialog();
+                },
+              );
+            },
             child: const Text('Sign up'),
           )
         ],

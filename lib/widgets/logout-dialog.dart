@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/confirmation_dialog.dart';
 
 import '../main.dart';
 
@@ -21,7 +22,7 @@ class _LogoutDialog extends State<LogoutDialog>
   Future<void> _logout() async {
 
     var response = await session_requests.post(
-      'http://192.168.1.103:5229/logout',
+      '/logout',
       json.encode(currentUser?.email),
     );
 
@@ -41,27 +42,7 @@ class _LogoutDialog extends State<LogoutDialog>
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        title: const Text(
-          "Log out?",
-          textAlign: TextAlign.center,
-        ),
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: _logout,
-              child: const Text('Yes'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('No'),
-            )
-          ],
-        )
-    );
+    return ConfirmationDialog(onConfirm: _logout, title: "Log out?");
   }
 }
 

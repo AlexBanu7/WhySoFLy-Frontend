@@ -50,6 +50,7 @@ class _OrderPage extends State<OrderPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Ordering at ${widget.marketName}"),
       drawer: const CustomDrawer(),
       body: CategoriesAccordion(

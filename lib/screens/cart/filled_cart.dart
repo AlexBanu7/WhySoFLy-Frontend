@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/widgets/login-dialog.dart';
 
 
 
@@ -21,7 +22,6 @@ class _FilledCart extends State<FilledCart>
   void initState() {
     super.initState();
   }
-
 
   List<Widget> get_children() {
     List<Widget> cartItemsToChildren = [
@@ -181,11 +181,11 @@ class _FilledCart extends State<FilledCart>
                   child: Column(
                     children: <Widget>[
                       Text(
-                        'Total Price: ${cartService.calculateTotalPrice().toStringAsFixed(2)}',
+                        'Total Price: ${cartService.calculateTotalPrice().toStringAsFixed(2)} RON',
                         style: const TextStyle(fontSize: 22.0),
                       ),
                       Text(
-                        'Volume Left: ${cartService.computeVolumeLeft().toStringAsFixed(2)}',
+                        'Volume Left: ${cartService.computeVolumeLeft().toStringAsFixed(2)} L',
                         style: const TextStyle(fontSize: 22.0),
                       ),
                     ],
@@ -194,7 +194,18 @@ class _FilledCart extends State<FilledCart>
                 const Spacer(), // Add space between the text and button
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (currentUser != null){
+                        Navigator.pushNamed(context, '/checkout');
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const LoginDialog();
+                          },
+                        );
+                      }
+                    },
                     child: const Text('Checkout'),
                   ),
                 ),

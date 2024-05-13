@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/confirmation_dialog.dart';
+import 'package:frontend/widgets/login-dialog.dart';
 
 import '../main.dart';
 
@@ -84,6 +86,37 @@ class _CustomDrawer extends State<CustomDrawer>
             title: const Text('Cart'),
             onTap: () {
               Navigator.pushNamed(context, "/cart");
+            },
+          ),
+          ListTile(
+            title: const Text('Become a Market Employee'),
+            onTap: () {
+              // TODO: Uncomment
+              // if (currentUser != null){
+                Navigator.pushNamed(context, "/register_employee");
+              // } else {
+              //   showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return const LoginDialog();
+              //     },
+              //   );
+              // }
+            },
+          ),
+          ListTile(
+            title: const Text('Register your Market'),
+            onTap: () {
+              if (currentUser != null){
+                Navigator.pushNamed(context, "/register_employee");
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const LoginDialog();
+                  },
+                );
+              }
             },
           ),
           ListTile(

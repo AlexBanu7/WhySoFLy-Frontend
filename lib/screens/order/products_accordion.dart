@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/order/add_to_cart_dialog.dart';
 import 'package:frontend/screens/order/product_details_dialog.dart';
 
-import '../../models/category.dart';
-import '../../models/product.dart';
+import 'package:frontend/models/category.dart';
+import 'package:frontend/models/product.dart';
 
 
 class ProductsAccordion extends StatefulWidget {

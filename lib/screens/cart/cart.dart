@@ -30,6 +30,7 @@ class _CartPage extends State<CartPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Your Shopping Cart"),
       drawer: const CustomDrawer(),
       body: cartService.cartitems.isNotEmpty ? FilledCart(onUpdate: () {

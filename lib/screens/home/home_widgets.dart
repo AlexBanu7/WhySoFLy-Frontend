@@ -31,9 +31,7 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
             : 150.0 + (_controller.value * 50); // Adjust target size as needed
         return GestureDetector(
           onTap: () {
-            setState(() {
-              _isSizeUp = !_isSizeUp;
-            });
+            Navigator.pushNamed(context, "/map");
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
