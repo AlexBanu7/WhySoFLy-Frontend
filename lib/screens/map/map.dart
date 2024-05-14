@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
-import '../../main.dart';
-import '../../widgets/custom_appbar.dart';
-import '../../widgets/custom_drawer.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/widgets/custom_appbar.dart';
+import 'package:frontend/widgets/custom_drawer.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

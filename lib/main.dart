@@ -8,6 +8,7 @@ import 'package:frontend/screens/howto/howto.dart';
 import 'package:frontend/screens/map/map.dart';
 import 'package:frontend/screens/order/order.dart';
 import 'package:frontend/screens/register_employee/register_employee.dart';
+import 'package:frontend/screens/register_market/register_market.dart';
 import 'package:frontend/utils/cart_service.dart';
 import 'package:frontend/utils/session_requests.dart';
 import 'package:frontend/utils/temp_inits.dart';
@@ -81,7 +82,8 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => const CartPage(),
         '/order': (context) => OrderPage(arguments: ModalRoute.of(context)?.settings.arguments),
         '/checkout': (context) => const CheckoutPage(),
-        '/register_employee': (context) => const RegisterEmployeePage()
+        '/register_employee': (context) => const RegisterEmployeePage(),
+        '/register_market': (context) => const RegisterMarketPage()
       },
     );
   }

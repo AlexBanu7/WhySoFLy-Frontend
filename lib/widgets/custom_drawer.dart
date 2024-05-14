@@ -107,16 +107,17 @@ class _CustomDrawer extends State<CustomDrawer>
           ListTile(
             title: const Text('Register your Market'),
             onTap: () {
-              if (currentUser != null){
-                Navigator.pushNamed(context, "/register_employee");
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const LoginDialog();
-                  },
-                );
-              }
+              // TODO: Uncomment
+              // if (currentUser != null){
+              Navigator.pushNamed(context, "/register_market");
+              // } else {
+              //   showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return const LoginDialog();
+              //     },
+              //   );
+              // }
             },
           ),
           ListTile(
