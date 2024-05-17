@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/register_employee/employee_confirmation_dialog.dart';
+import 'package:frontend/customer_screens/register_employee/employee_confirmation_dialog.dart';
 
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';

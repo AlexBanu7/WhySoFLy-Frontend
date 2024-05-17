@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/register_market/market_confirmation_dialog.dart';
-import 'package:frontend/screens/register_market/market_location_dialog.dart';
+import 'package:frontend/customer_screens/register_market/market_confirmation_dialog.dart';
+import 'package:frontend/customer_screens/register_market/market_location_dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';

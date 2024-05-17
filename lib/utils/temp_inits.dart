@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:frontend/models/employee.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:frontend/models/category.dart';
@@ -10,6 +11,7 @@ class TempInits {
   List<Market> markets = [];
   List<Product> products = [];
   List<Category> categories = [];
+  List<Employee> employees = [];
 
   TempInits () {
     markets = [Market(
@@ -18,6 +20,13 @@ class TempInits {
       location: const LatLng(45.7489, 21.23)
     )];
     Market market = markets[0];
+    employees = [Employee(
+        id: Random().nextInt(9999),
+        name: "Alex Banu",
+        status: "idle",
+        ordersDone: 30,
+        marketId: market.id)
+    ];
     categories = [Category(
       id: Random().nextInt(9999),
       name: "Vegetables",

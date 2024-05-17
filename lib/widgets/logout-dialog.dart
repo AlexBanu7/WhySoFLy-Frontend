@@ -28,7 +28,6 @@ class _LogoutDialog extends State<LogoutDialog>
 
     if (response.statusCode == 200) {
       currentUser = null;
-      Navigator.pop(context);
       const snackBar = SnackBar(
         content: Text('See you soon!'),
       );

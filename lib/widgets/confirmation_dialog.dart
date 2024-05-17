@@ -28,6 +28,7 @@ class _ConfirmationDialog extends State<ConfirmationDialog>
             ElevatedButton(
               onPressed: () {
                 widget.onConfirm();
+                Navigator.pop(context);
               },
               child: const Text('Yes'),
             ),

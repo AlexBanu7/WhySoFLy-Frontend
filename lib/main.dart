@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/cart/cart.dart';
-import 'package:frontend/screens/checkout/checkout.dart';
-import 'package:frontend/screens/home/home.dart';
-import 'package:frontend/screens/howto/howto.dart';
-import 'package:frontend/screens/map/map.dart';
-import 'package:frontend/screens/order/order.dart';
-import 'package:frontend/screens/register_employee/register_employee.dart';
-import 'package:frontend/screens/register_market/register_market.dart';
+import 'package:frontend/customer_screens/cart/cart.dart';
+import 'package:frontend/customer_screens/checkout/checkout.dart';
+import 'package:frontend/customer_screens/home/home.dart';
+import 'package:frontend/customer_screens/howto/howto.dart';
+import 'package:frontend/customer_screens/map/map.dart';
+import 'package:frontend/customer_screens/order/order.dart';
+import 'package:frontend/customer_screens/register_employee/register_employee.dart';
+import 'package:frontend/customer_screens/register_market/register_market.dart';
+import 'package:frontend/market_screens/manage_employees/manage_employees.dart';
 import 'package:frontend/utils/cart_service.dart';
 import 'package:frontend/utils/session_requests.dart';
 import 'package:frontend/utils/temp_inits.dart';
@@ -16,6 +17,7 @@ import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 import 'package:frontend/models/user.dart';
+import 'package:uuid/uuid.dart';
 
 
 void main() {
@@ -63,6 +65,7 @@ User? currentUser;
 TempInits tempInits = TempInits();
 CartService cartService = CartService(tempInits.markets[0].id);
 Session session_requests = Session();
+Uuid uuid = Uuid();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -83,7 +86,8 @@ class MyApp extends StatelessWidget {
         '/order': (context) => OrderPage(arguments: ModalRoute.of(context)?.settings.arguments),
         '/checkout': (context) => const CheckoutPage(),
         '/register_employee': (context) => const RegisterEmployeePage(),
-        '/register_market': (context) => const RegisterMarketPage()
+        '/register_market': (context) => const RegisterMarketPage(),
+        '/manage_employees': (context) => const ManageEmployeesPage()
       },
     );
   }

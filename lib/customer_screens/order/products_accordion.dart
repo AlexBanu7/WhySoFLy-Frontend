@@ -3,8 +3,8 @@ import 'dart:core';
 import 'package:accordion/accordion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/order/add_to_cart_dialog.dart';
-import 'package:frontend/screens/order/product_details_dialog.dart';
+import 'package:frontend/customer_screens/order/add_to_cart_dialog.dart';
+import 'package:frontend/customer_screens/order/product_details_dialog.dart';
 
 import 'package:frontend/models/category.dart';
 import 'package:frontend/models/product.dart';

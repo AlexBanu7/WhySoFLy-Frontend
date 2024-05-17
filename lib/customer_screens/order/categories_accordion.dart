@@ -4,9 +4,9 @@ import 'package:accordion/accordion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/screens/order/products_accordion.dart';
+import 'package:frontend/customer_screens/order/products_accordion.dart';
 
-import '../../models/category.dart';
+import 'package:frontend/models/category.dart';
 
 class CategoriesAccordion extends StatefulWidget {
 

@@ -3,8 +3,8 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/models/cartitem.dart';
-import 'package:frontend/screens/cart/empty_cart.dart';
-import 'package:frontend/screens/cart/filled_cart.dart';
+import 'package:frontend/customer_screens/cart/empty_cart.dart';
+import 'package:frontend/customer_screens/cart/filled_cart.dart';
 
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
