@@ -15,7 +15,7 @@ class ProductDetailsDialog extends StatefulWidget {
 class _ProductDetailsDialog extends State<ProductDetailsDialog>
     with SingleTickerProviderStateMixin{
 
-  late bool soldByWeight = widget.product.soldByWeight == 1;
+  late bool soldByWeight = widget.product.soldByWeight;
   // TODO: get from api
   final String productDescription = "Probably rotten";
 

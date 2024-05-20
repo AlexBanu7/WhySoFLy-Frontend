@@ -65,7 +65,7 @@ class _MapScreenState extends State<MapScreen> {
             infoWindow: InfoWindow(
                 title: 'Order at ${market.name}',
                 onTap: () {
-                  Navigator.pushNamed(context, '/order', arguments: market.name);
+                  Navigator.pushNamed(context, '/order', arguments: market);
                 }
             ),
             icon: BitmapDescriptor.defaultMarker,

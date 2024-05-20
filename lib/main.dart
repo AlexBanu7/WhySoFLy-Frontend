@@ -10,6 +10,7 @@ import 'package:frontend/customer_screens/order/order.dart';
 import 'package:frontend/customer_screens/register_employee/register_employee.dart';
 import 'package:frontend/customer_screens/register_market/register_market.dart';
 import 'package:frontend/market_screens/manage_employees/manage_employees.dart';
+import 'package:frontend/market_screens/manage_products/manage_products.dart';
 import 'package:frontend/utils/cart_service.dart';
 import 'package:frontend/utils/session_requests.dart';
 import 'package:frontend/utils/temp_inits.dart';
@@ -87,7 +88,8 @@ class MyApp extends StatelessWidget {
         '/checkout': (context) => const CheckoutPage(),
         '/register_employee': (context) => const RegisterEmployeePage(),
         '/register_market': (context) => const RegisterMarketPage(),
-        '/manage_employees': (context) => const ManageEmployeesPage()
+        '/manage_employees': (context) => const ManageEmployeesPage(),
+        '/manage_products': (context) => const ManageProductsPage()
       },
     );
   }

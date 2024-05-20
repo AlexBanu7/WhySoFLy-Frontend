@@ -7,6 +7,7 @@ import 'package:frontend/customer_screens/order/add_to_cart_dialog.dart';
 import 'package:frontend/customer_screens/order/product_details_dialog.dart';
 
 import 'package:frontend/models/category.dart';
+import 'package:frontend/models/market.dart';
 import 'package:frontend/models/product.dart';
 
 
@@ -16,13 +17,15 @@ class ProductsAccordion extends StatefulWidget {
   final int productsExpandedIndex;
   final int categoriesExpandedIndex;
   final void Function(int, int) updatedExpansionIndexes;
+  final Market market;
 
   const ProductsAccordion({
     super.key,
     required this.category,
     required this.categoriesExpandedIndex,
     required this.productsExpandedIndex,
-    required this.updatedExpansionIndexes
+    required this.updatedExpansionIndexes,
+    required this.market
   });
 
   @override
@@ -65,6 +68,9 @@ class _ProductsAccordion extends State<ProductsAccordion>
     for (var entry in (category.products ?? []).asMap().entries) {
       int index = entry.key;
       Product product = entry.value;
+      if (product.marketId != widget.market.id) {
+        continue;
+      }
       products_to_sections.add(
         AccordionSection(
           isOpen: widget.productsExpandedIndex == index,

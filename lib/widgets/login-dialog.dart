@@ -18,6 +18,8 @@ class _LoginDialog extends State<LoginDialog>
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  String error = '';
+
   Future<void> _login() async {
     String email = emailController.text;
     String password = passwordController.text;
@@ -32,15 +34,18 @@ class _LoginDialog extends State<LoginDialog>
       json.encode(data),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       var response = await session_requests.post(
         '/identity/userInfo',
         json.encode(email),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         // Parse the JSON response body into a Dart object
         final jsonResponse = json.decode(response.body);
         currentUser = User(email: jsonResponse['user']['email'],role: jsonResponse['role']);
+        setState(() {
+          error = '';
+        });
         Navigator.pop(context);
         const snackBar = SnackBar(
           content: Text('Welcome back!'),
@@ -51,10 +56,9 @@ class _LoginDialog extends State<LoginDialog>
         throw Exception('Request failed with status: ${response.statusCode}');
       }
     } else {
-      const snackBar = SnackBar(
-        content: Text('Invalid Credentials'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      setState(() {
+        error = 'Invalid email or password. Please try again.';
+      });
     }
   }
 
@@ -65,43 +69,54 @@ class _LoginDialog extends State<LoginDialog>
         "Wish to use our features?\n Log in to an account!",
         textAlign: TextAlign.center,
       ),
-      content:  Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextField(
-            controller: emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
+      content: SingleChildScrollView( // Wrap your Column with SingleChildScrollView
+        child: Padding( // Add Padding widget
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust padding based on keyboard's visibility
           ),
-          const SizedBox(height: 16.0),
-          TextField(
-            controller: passwordController,
-            decoration: const InputDecoration(labelText: 'Password'),
-            obscureText: true,
-          ),
-          const SizedBox(height: 32.0),
-          ElevatedButton(
-            onPressed: _login,
-            child: const Text('Log in'),
-          ),
-          const SizedBox(height: 16.0),
-          const Text(
-            "Alternatively, register an account."
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const SignupDialog();
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 16.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red),
+              ),
+              ElevatedButton(
+                onPressed: _login,
+                child: const Text('Log in'),
+              ),
+              const SizedBox(height: 16.0),
+              const Text(
+                  "Alternatively, register an account."
+              ),
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const SignupDialog();
+                    },
+                  );
                 },
-              );
-            },
-            child: const Text('Sign up'),
-          )
-        ],
-      )
+                child: const Text('Sign up'),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

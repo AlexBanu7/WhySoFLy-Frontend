@@ -38,13 +38,16 @@ class _SignupDialog extends State<SignupDialog>
         json.encode(data),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         // successfully registered, apply for Customer role
         var response = await session_requests.post(
-          '/identity/assignCustomerRole',
-          json.encode(_email),
+          '/identity/assignRole',
+          json.encode({
+            'email': _email,
+            'role': 'Customer'
+          }),
         );
-        if (response.statusCode == 200) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
           // Parse the JSON response body into a Dart object
           Navigator.pop(context);
           const snackBar = SnackBar(

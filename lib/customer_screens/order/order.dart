@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/customer_screens/order/categories_accordion.dart';
+import 'package:frontend/models/market.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../models/category.dart';
 import '../../models/product.dart';
@@ -14,13 +16,13 @@ import '../../widgets/custom_drawer.dart';
 
 class OrderPage extends StatefulWidget {
 
-  late String marketName;
+  late Market market;
 
   OrderPage({super.key, arguments}){
-    if (arguments is String){
-      marketName = arguments;
+    if (arguments is Market){
+      market = arguments;
     } else {
-      marketName = "an Unnamed Market";
+      market = Market(id: -1, name: "Unknown", location: const LatLng(0,0));
     }
   }
 
@@ -51,9 +53,10 @@ class _OrderPage extends State<OrderPage>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar("Ordering at ${widget.marketName}"),
+      appBar: CustomAppBar("Ordering at ${widget.market.name}"),
       drawer: const CustomDrawer(),
       body: CategoriesAccordion(
+        market: widget.market,
         categoriesExpandedIndex: categoriesExpandedIndex,
         productsExpandedIndex: productsExpandedIndex,
         updatedExpansionIndexes: updatedExpansionIndexes

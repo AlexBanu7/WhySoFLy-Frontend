@@ -127,6 +127,12 @@ class _CustomDrawer extends State<CustomDrawer>
             },
           ),
           ListTile(
+            title: const Text('Manage Products'),
+            onTap: () {
+              Navigator.pushNamed(context, "/manage_products");
+            },
+          ),
+          ListTile(
             title: const Text('How to'),
             onTap: () {
               Navigator.pushNamed(context, "/howto");

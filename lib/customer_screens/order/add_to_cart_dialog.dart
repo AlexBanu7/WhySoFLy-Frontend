@@ -19,7 +19,7 @@ class _AddToCartDialog extends State<AddToCartDialog>
 
   final _formKey = GlobalKey<FormState>();
   num selectedQuantity = 0;
-  late bool soldByWeight = widget.product.soldByWeight == 1;
+  late bool soldByWeight = widget.product.soldByWeight;
 
   @override
   Widget build(BuildContext context) {

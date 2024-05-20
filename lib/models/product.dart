@@ -4,7 +4,7 @@ class Product {
   int id;
   int marketId;
   int categoryId;
-  int soldByWeight;
+  bool soldByWeight;
   String name;
   double volumePerQuantity; // volume of one item/one kilo
   double pricePerQuantity; // price for one item/one kilo

@@ -37,7 +37,7 @@ class TempInits {
       name: "Potatoes",
       marketId: market.id,
       categoryId: category.id,
-      soldByWeight: 1,
+      soldByWeight: true,
       volumePerQuantity: 1.5,
       pricePerQuantity: 4.99,
       image: 'assets/images/home-footer.png'

@@ -7,9 +7,11 @@ import 'package:frontend/main.dart';
 import 'package:frontend/customer_screens/order/products_accordion.dart';
 
 import 'package:frontend/models/category.dart';
+import 'package:frontend/models/market.dart';
 
 class CategoriesAccordion extends StatefulWidget {
 
+  final Market market;
   final int categoriesExpandedIndex;
   final int productsExpandedIndex;
   final void Function(int, int) updatedExpansionIndexes;
@@ -18,7 +20,8 @@ class CategoriesAccordion extends StatefulWidget {
     super.key,
     required this.categoriesExpandedIndex,
     required this.productsExpandedIndex,
-    required this.updatedExpansionIndexes
+    required this.updatedExpansionIndexes,
+    required this.market
   });
 
   @override
@@ -64,6 +67,7 @@ class _CategoriesAccordion extends State<CategoriesAccordion>
           contentVerticalPadding: 0,
           header: Text(category.name),
           content: ProductsAccordion(
+              market: widget.market,
               category: category,
               productsExpandedIndex: widget.productsExpandedIndex,
               categoriesExpandedIndex: index,

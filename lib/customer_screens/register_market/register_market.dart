@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/customer_screens/register_market/market_confirmation_dialog.dart';
 import 'package:frontend/customer_screens/register_market/market_location_dialog.dart';
+import 'package:frontend/main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
@@ -33,15 +36,59 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
     super.dispose();
   }
 
-  void onConfirm() {
-    setState(() {
-      _loading = false; // Start loading
-      _error = ''; // Clear previous error
-    });
+  Future<void> onConfirm() async {
+    Map<String, String> data = {
+      "name": name,
+      "latitude": location?.latitude.toString() ?? "",
+      "longitude": location?.longitude.toString() ?? "",
+      "workDay": "${marketHours['_weekdaysOpeningTime']!.format(context)} - ${marketHours['_weekdaysClosingTime']!.format(context)}",
+      "weekend": "${marketHours['_weekendOpeningTime']!.format(context)} - ${marketHours['_weekendClosingTime']!.format(context)}",
+    };
+
+    var response = await session_requests.post(
+      '/identity/assignRole',
+      json.encode({
+        'email': currentUser?.email,
+        'role': 'Manager_PENDING'
+      }),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // successfully registered, apply for Customer role
+      var response = await session_requests.post(
+        '/api/Market',
+        json.encode(data),
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        // Parse the JSON response body into a Dart object
+        const snackBar = SnackBar(
+          content: Text('Market Registered! An admin will review your request.'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        setState(() {
+          _loading = false; // Stop loading
+          _error = ''; // Clear previous error
+        });
+      } else {
+        // If the request was not successful, handle the error
+        throw Exception('Request failed with status: ${response.statusCode}');
+      }
+    } else {
+      Map<String, dynamic> data = json.decode(response.body);
+      Iterable<String> errorKeys = data["errors"].keys;
+      String? firstErrorKey = errorKeys.isNotEmpty ? errorKeys.first : null;
+      dynamic firstError = firstErrorKey != null ? data["errors"][firstErrorKey][0] : null;
+
+      setState(() {
+        _loading = false; // Stop loading
+        _error = firstError as String;
+      });
+    }
   }
 
   void _submitForm() {
-    // if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _loading = true; // Start loading
         _error = ''; // Clear previous error
@@ -52,7 +99,7 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
           return MarketConfirmationDialog(onConfirm: onConfirm);
         },
       );
-    // }
+    }
   }
 
   @override
@@ -106,7 +153,6 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 TextFormField(
                                   decoration: const InputDecoration(
@@ -193,10 +239,7 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
                                         },
                                         readOnly: true,
                                         onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) => MarketLocationDialog(onConfirm: onSelectLocation)
-                                          );
+                                          _selectTime(context, '_weekdaysOpeningTime');
                                         },
                                         decoration: const InputDecoration(
                                           labelText: 'Opening Hours',
