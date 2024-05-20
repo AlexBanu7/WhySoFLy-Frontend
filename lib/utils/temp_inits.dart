@@ -30,6 +30,7 @@ class TempInits {
     categories = [Category(
       id: Random().nextInt(9999),
       name: "Vegetables",
+      products: []
     )];
     Category category = categories[0];
     products = [Product(
