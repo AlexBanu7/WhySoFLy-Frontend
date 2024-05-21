@@ -62,6 +62,7 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
             // Parse the JSON response body into a Dart object
             final jsonResponse = json.decode(response.body);
             currentUser = User(email: jsonResponse['user']['email'], role: jsonResponse['role']);
+            Navigator.pop(context);
             const snackBar = SnackBar(
               content: Text('Your request has been sent! You will be notified when it is approved.'),
             );
