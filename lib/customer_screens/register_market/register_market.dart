@@ -38,52 +38,31 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
 
   Future<void> onConfirm() async {
     Map<String, String> data = {
+      "email": currentUser?.email ?? "",
       "name": name,
       "latitude": location?.latitude.toString() ?? "",
       "longitude": location?.longitude.toString() ?? "",
       "workDay": "${marketHours['_weekdaysOpeningTime']!.format(context)} - ${marketHours['_weekdaysClosingTime']!.format(context)}",
       "weekend": "${marketHours['_weekendOpeningTime']!.format(context)} - ${marketHours['_weekendClosingTime']!.format(context)}",
     };
-
     var response = await session_requests.post(
-      '/identity/assignRole',
-      json.encode({
-        'email': currentUser?.email,
-        'role': 'Manager_PENDING'
-      }),
+      '/api/Market',
+      json.encode(data),
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      // successfully registered, apply for Customer role
-      var response = await session_requests.post(
-        '/api/Market',
-        json.encode(data),
+      // Parse the JSON response body into a Dart object
+      const snackBar = SnackBar(
+        content: Text('Market Registered! An admin will review your request.'),
       );
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        // Parse the JSON response body into a Dart object
-        const snackBar = SnackBar(
-          content: Text('Market Registered! An admin will review your request.'),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        setState(() {
-          _loading = false; // Stop loading
-          _error = ''; // Clear previous error
-        });
-      } else {
-        // If the request was not successful, handle the error
-        throw Exception('Request failed with status: ${response.statusCode}');
-      }
-    } else {
-      Map<String, dynamic> data = json.decode(response.body);
-      Iterable<String> errorKeys = data["errors"].keys;
-      String? firstErrorKey = errorKeys.isNotEmpty ? errorKeys.first : null;
-      dynamic firstError = firstErrorKey != null ? data["errors"][firstErrorKey][0] : null;
-
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       setState(() {
         _loading = false; // Stop loading
-        _error = firstError as String;
+        _error = ''; // Clear previous error
       });
+    } else {
+      // If the request was not successful, handle the error
+      throw Exception('Request failed with status: ${response.statusCode}');
     }
   }
 

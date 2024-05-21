@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/customer_screens/register_employee/employee_confirmation_dialog.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/models/user.dart';
 
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
@@ -17,7 +21,6 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
 
   final _formKey = GlobalKey<FormState>();
   String _key = '';
-  String _error = '';
   bool _loading = false; // Track loading state
 
   @override
@@ -25,18 +28,65 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
     super.dispose();
   }
 
-  void onConfirm() {
-    setState(() {
-      _loading = false; // Start loading
-      _error = ''; // Clear previous error
-    });
+  Future<void> onConfirm() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _loading = true; // Start loading
+      });
+
+      Map<String, String> data = {
+        'email': currentUser?.email??"",
+        'invitation_key': _key,
+      };
+
+      var response = await session_requests.post(
+        '/api/Market/claimInvite',
+        json.encode(data),
+      );
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        // successfully registered, apply for Customer role
+        var response = await session_requests.post(
+          '/identity/assignRole',
+          json.encode({
+            'email': currentUser?.email??"",
+            'role': 'Employee'
+          }),
+        );
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          var response = await session_requests.post(
+            '/identity/userInfo',
+            json.encode(currentUser?.email??""),
+          );
+          if (response.statusCode >= 200 && response.statusCode < 300) {
+            // Parse the JSON response body into a Dart object
+            final jsonResponse = json.decode(response.body);
+            currentUser = User(email: jsonResponse['user']['email'], role: jsonResponse['role']);
+            const snackBar = SnackBar(
+              content: Text('Your request has been sent! You will be notified when it is approved.'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            setState(() {
+              _loading = false;
+            });
+          } else {
+            // If the request was not successful, handle the error
+            throw Exception('Request failed with status: ${response.statusCode}');
+          }
+        } else {
+          // If the request was not successful, handle the error
+          throw Exception('Request failed with status: ${response.statusCode}');
+        }
+      } else {
+        throw Exception('Request failed with status: ${response.statusCode}');
+      }
+    }
   }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _loading = true; // Start loading
-        _error = ''; // Clear previous error
       });
       showDialog(
         context: context,
@@ -107,11 +157,6 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
                                   : ElevatedButton(
                                 onPressed: _submitForm,
                                 child: const Text('Send Request'),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                _error,
-                                style: const TextStyle(color: Colors.red),
                               ),
                             ],
                           ),
