@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/models/market.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 
@@ -54,27 +56,40 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _populate_markers() {
-    // TODO: Replace with api call
-    Set<Marker> newMarkers = {};
-    for (var market in tempInits.markets) {
-      newMarkers.add(
-          Marker(
-            markerId: MarkerId(market.location.toString()),
-            position: market.location,
-            infoWindow: InfoWindow(
-                title: 'Order at ${market.name}',
-                onTap: () {
-                  Navigator.pushNamed(context, '/order', arguments: market);
-                }
-            ),
-            icon: BitmapDescriptor.defaultMarker,
-          )
+  Future<void> _populate_markers() async {
+    var response = await session_requests.get(
+        '/api/Market'
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      var body = json.decode(response.body);
+      Set<Marker> newMarkers = {};
+      for (var market_in_body in body) {
+        LatLng location = LatLng(double.tryParse(market_in_body['latitude'])??0, double.tryParse(market_in_body['longitude'])??0);
+        Market market = Market(id: market_in_body['id'], name: market_in_body['name'], location: location);
+        newMarkers.add(
+            Marker(
+              markerId: MarkerId(market.location.toString()),
+              position: market.location,
+              infoWindow: InfoWindow(
+                  title: 'Order at ${market.name}',
+                  onTap: () {
+                    Navigator.pushNamed(context, '/order', arguments: market);
+                  }
+              ),
+              icon: BitmapDescriptor.defaultMarker,
+            )
+        );
+      }
+      setState(() {
+        _markers = newMarkers;
+      });
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Something went wrong! Please refresh the page'),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    setState(() {
-      _markers = newMarkers;
-    });
   }
 
   void _onMapCreated(GoogleMapController controllerParam) {

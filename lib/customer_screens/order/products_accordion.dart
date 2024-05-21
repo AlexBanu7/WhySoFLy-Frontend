@@ -68,9 +68,9 @@ class _ProductsAccordion extends State<ProductsAccordion>
     for (var entry in (category.products).asMap().entries) {
       int index = entry.key;
       Product product = entry.value;
-      // if (product.marketId != widget.market.id) {
-      //   continue;
-      // }
+      if (product.marketId != widget.market.id) {
+        continue;
+      }
       products_to_sections.add(
         AccordionSection(
           isOpen: widget.productsExpandedIndex == index,

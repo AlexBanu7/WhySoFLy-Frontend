@@ -50,7 +50,7 @@ class _CategoriesAccordion extends State<CategoriesAccordion>
 
   Future<List<Category>> getCategories() async {
     var response = await session_requests.get(
-      '/api/Category?market_id=12'
+      '/api/Category?market_id=${widget.market.id}'
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -71,7 +71,6 @@ class _CategoriesAccordion extends State<CategoriesAccordion>
             soldByWeight: product['soldByWeight'],
             volumePerQuantity: double.tryParse(product['volumePerQuantity'].toString())??0.0,
             pricePerQuantity: double.tryParse(product['pricePerQuantity'].toString())?? 0.0,
-            image: product['image']??"",
           ));
         }
         categories.add(newCategory);
