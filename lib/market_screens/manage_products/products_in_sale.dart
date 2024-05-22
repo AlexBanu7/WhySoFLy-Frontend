@@ -22,7 +22,6 @@ class _ProductsInSaleTab extends State<ProductsInSaleTab>
   }
 
   void updatedExpansionIndexes(_categoriesExpandedIndex, _productsExpandedIndex){
-    print("settings state at indexes ${_categoriesExpandedIndex} and ${_productsExpandedIndex}");
     setState(() {
       categoriesExpandedIndex = _categoriesExpandedIndex;
       productsExpandedIndex = _productsExpandedIndex;
@@ -32,7 +31,7 @@ class _ProductsInSaleTab extends State<ProductsInSaleTab>
   @override
   Widget build(BuildContext context) {
     return CategoriesAccordion(
-        market: tempInits.markets[0],
+        market: currentUser?.market,
         categoriesExpandedIndex: categoriesExpandedIndex,
         productsExpandedIndex: productsExpandedIndex,
         updatedExpansionIndexes: updatedExpansionIndexes,

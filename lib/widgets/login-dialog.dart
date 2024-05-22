@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend/models/employee.dart';
+import 'package:frontend/models/market.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/widgets/singup-dialog.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../main.dart';
 
@@ -42,7 +45,33 @@ class _LoginDialog extends State<LoginDialog>
       if (response.statusCode >= 200 && response.statusCode < 300) {
         // Parse the JSON response body into a Dart object
         final jsonResponse = json.decode(response.body);
-        currentUser = User(email: jsonResponse['user']['email'],role: jsonResponse['role']);
+        currentUser = User(
+          email: jsonResponse['user']['email'],
+          role: jsonResponse['role'],
+        );
+        if (jsonResponse["employee"] != null) {
+          Employee employee = Employee(
+            id: jsonResponse['employee']['id'],
+            name: jsonResponse['employee']['name'],
+            status: jsonResponse['employee']['status'],
+            ordersDone: jsonResponse['employee']['ordersDone'],
+            marketName: jsonResponse['employee']['marketName'],
+          );
+          currentUser!.employee = employee;
+        }
+        if (jsonResponse["market"] != null) {
+          Market market = Market(
+            id: jsonResponse['market']['id'],
+            name: jsonResponse['market']['name'],
+            location: LatLng(
+              double.tryParse(jsonResponse['market']['latitude'])??0.0,
+              double.tryParse(jsonResponse['market']['longitude'])??0.0,
+            ),
+            inviteKey: jsonResponse['market']['invitationKey'],
+            verified: jsonResponse['market']['verified'],
+          );
+          currentUser!.market = market;
+        }
         setState(() {
           error = '';
         });

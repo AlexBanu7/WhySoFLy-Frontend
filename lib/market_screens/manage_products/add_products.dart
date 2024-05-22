@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/models/category.dart';
@@ -13,6 +15,7 @@ class AddProductsTab extends StatefulWidget {
 class _AddProductsTab extends State<AddProductsTab>
     with SingleTickerProviderStateMixin{
 
+  List<Category> categories = [];
   final _formKey = GlobalKey<FormState>();
 
   // Fields
@@ -38,6 +41,43 @@ class _AddProductsTab extends State<AddProductsTab>
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCategories().then((value) {
+      setState(() {
+        categories = value;
+        _loading = false;
+      });
+    });
+  }
+
+  Future<List<Category>> getCategories() async {
+    var response = await session_requests.get(
+        '/api/Category'
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      List<Category> categories = [];
+      var body = json.decode(response.body);
+      for (var category in body) {
+        Category newCategory = Category(
+            id: category['id'],
+            name: category['name'],
+            products: []
+        );
+        categories.add(newCategory);
+      }
+      return categories;
+    } else {
+      const snackBar = SnackBar(
+        content: Text('Something went wrong! Please refresh the page'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return [];
+    }
   }
 
   List<Widget> _nutritional_values_fields() {
@@ -156,7 +196,7 @@ class _AddProductsTab extends State<AddProductsTab>
                                       selectedCategory = newValue;
                                     });
                                   },
-                                  items: tempInits.categories.map((Category category) {
+                                  items: categories.map((Category category) {
                                     return DropdownMenuItem<String>(
                                       value: category.name,
                                       child: Text(category.name),

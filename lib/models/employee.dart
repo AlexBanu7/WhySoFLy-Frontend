@@ -3,7 +3,7 @@ class Employee {
   String name;
   String status;
   int ordersDone;
-  int marketId;
+  String marketName;
 
-  Employee({required this.id, required this.name, required this.status, required this.ordersDone, required this.marketId});
+  Employee({required this.id, required this.name, required this.status, required this.ordersDone, required this.marketName});
 }

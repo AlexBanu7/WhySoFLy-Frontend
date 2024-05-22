@@ -17,7 +17,7 @@ class ProductsAccordion extends StatefulWidget {
   final int productsExpandedIndex;
   final int categoriesExpandedIndex;
   final void Function(int, int) updatedExpansionIndexes;
-  final Market market;
+  final Market? market;
 
   const ProductsAccordion({
     super.key,
@@ -68,7 +68,7 @@ class _ProductsAccordion extends State<ProductsAccordion>
     for (var entry in (category.products).asMap().entries) {
       int index = entry.key;
       Product product = entry.value;
-      if (product.marketId != widget.market.id) {
+      if (product.marketId != widget.market?.id) {
         continue;
       }
       products_to_sections.add(

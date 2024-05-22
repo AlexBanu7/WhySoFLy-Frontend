@@ -14,7 +14,7 @@ import 'package:frontend/models/product.dart';
 
 class CategoriesAccordion extends StatefulWidget {
 
-  final Market market;
+  final Market? market;
   final int categoriesExpandedIndex;
   final int productsExpandedIndex;
   final void Function(int, int) updatedExpansionIndexes;
@@ -50,7 +50,7 @@ class _CategoriesAccordion extends State<CategoriesAccordion>
 
   Future<List<Category>> getCategories() async {
     var response = await session_requests.get(
-      '/api/Category?market_id=${widget.market.id}'
+      '/api/Category?market_id=${widget.market?.id}'
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {

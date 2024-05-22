@@ -61,7 +61,12 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
           if (response.statusCode >= 200 && response.statusCode < 300) {
             // Parse the JSON response body into a Dart object
             final jsonResponse = json.decode(response.body);
-            currentUser = User(email: jsonResponse['user']['email'], role: jsonResponse['role']);
+            currentUser = User(
+                email: jsonResponse['user']['email'],
+                role: jsonResponse['role'],
+                employee: jsonResponse['employee'],
+                market: jsonResponse['market']
+            );
             Navigator.pop(context);
             const snackBar = SnackBar(
               content: Text('Your request has been sent! You will be notified when it is approved.'),

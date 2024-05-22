@@ -17,10 +17,6 @@ class CartService {
       price: 5.99
   )];
 
-  CartService(_marketId) {
-    marketId = _marketId;
-  }
-
   void clearCart() {
     // clears the cart
     marketId = null;
