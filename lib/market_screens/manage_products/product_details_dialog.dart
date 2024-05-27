@@ -34,17 +34,6 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       var body = json.decode(response.body);
-      Product fetchedProduct = Product(
-        id: body['id'],
-        name: body['name'],
-        description: body['description'],
-        marketId: widget.product.marketId,
-        categoryId: widget.product.categoryId,
-        soldByWeight: body['soldByWeight'],
-        volumePerQuantity: double.tryParse(body['volumePerQuantity'].toString())??0.0,
-        pricePerQuantity: double.tryParse(body['pricePerQuantity'].toString())?? 0.0,
-        image: body['image']
-      );
       var nutritionalValuesFromBody = body["nutritionalValues"];
       Map<String, num> fetchedNutritionalValues = {
         "Energy": nutritionalValuesFromBody['energy'],
@@ -56,6 +45,18 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
         "Sugars": nutritionalValuesFromBody['sugars'],
         "Proteins": nutritionalValuesFromBody['proteins']
       };
+      Product fetchedProduct = Product(
+        id: body['id'],
+        name: body['name'],
+        description: body['description'],
+        marketId: widget.product.marketId,
+        categoryId: widget.product.categoryId,
+        soldByWeight: body['soldByWeight'],
+        volumePerQuantity: double.tryParse(body['volumePerQuantity'].toString())??0.0,
+        pricePerQuantity: double.tryParse(body['pricePerQuantity'].toString())?? 0.0,
+        image: body['image'],
+        nutritionalValues: fetchedNutritionalValues
+      );
       setState(() {
         product = fetchedProduct;
         nutritionalValues = fetchedNutritionalValues;
@@ -100,10 +101,32 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      insetPadding: EdgeInsets.all(15),
-      title: Text(
-        "${product?.name}",
-        textAlign: TextAlign.center,
+      insetPadding: const EdgeInsets.all(15),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              "${product?.name}",
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Positioned(
+            right: 0.0,
+            top: 0.0,
+            child: IconButton(
+              icon: const Icon(Icons.edit),
+              color: Colors.red,
+              iconSize: 30,
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/edit-product',
+                  arguments: product,
+                );
+              },
+            ),
+          ),
+        ]
       ),
       content: product != null ?
         Container(
@@ -111,8 +134,13 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
           child: Center(
             child:ListView(
               children: [
+                product?.image != null ?
+                    Image.memory(
+                      base64Decode(product!.image!.split(',').last),
+                      height: MediaQuery.of(context).size.height * 0.3,
+                    ) :
                 Image.asset(
-                  product?.image??'assets/images/question-man.png',
+                  'assets/images/question-man.png',
                   height: MediaQuery.of(context).size.height * 0.3,
                 ),
                 const SizedBox(height: 20),

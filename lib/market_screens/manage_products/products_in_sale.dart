@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/customer_screens/order/categories_accordion.dart';
+import 'package:frontend/market_screens/manage_products/categories_accordion.dart';
 import 'package:frontend/main.dart';
 
 

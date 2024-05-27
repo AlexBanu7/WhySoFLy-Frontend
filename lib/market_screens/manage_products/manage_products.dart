@@ -37,7 +37,6 @@ class _ManageProductsPage extends State<ManageProductsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Products"),
       drawer: const CustomDrawer(),
       body: Container(

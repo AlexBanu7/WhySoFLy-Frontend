@@ -29,14 +29,21 @@ class _CustomDrawer extends State<CustomDrawer>
           width: 150,
           height: 150,
           fit: BoxFit.cover,
+          color: Colors.white,
         ),
         Text(
           currentUser!.email,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(
+              fontSize: 20,
+              color: Colors.white
+          ),
         ),
         Text(
           currentUser!.role,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(
+              fontSize: 20,
+              color: Colors.white
+          ),
         ),
       ]);
     } else {
@@ -62,7 +69,13 @@ class _CustomDrawer extends State<CustomDrawer>
             height: 300,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: currentUser != null ? Colors.lightBlueAccent : Colors.black12,
+                color: currentUser != null ?
+                currentUser?.market != null ?
+                Colors.orange :
+                    currentUser?.employee != null ?
+                        Colors.yellowAccent
+                    : Colors.lightBlueAccent
+                        : Colors.black12,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

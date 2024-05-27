@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/models/category.dart';
+import 'package:frontend/widgets/image_input.dart';
 
 
 class AddProductsTab extends StatefulWidget {
@@ -19,9 +21,12 @@ class _AddProductsTab extends State<AddProductsTab>
   final _formKey = GlobalKey<FormState>();
 
   // Fields
+  File? image;
   String name = '';
   String? selectedCategory;
   String? soldBy;
+  num? pricePerQuantity;
+  num? volumePerQuantity;
   final List<String> _items = ['Item', 'Kilograms'];
   String description = '';
   Map<String, num?> nutritionalValues = {
@@ -51,6 +56,12 @@ class _AddProductsTab extends State<AddProductsTab>
         categories = value;
         _loading = false;
       });
+    });
+  }
+
+  void passImage(File passedImage) {
+    setState(() {
+      image = passedImage;
     });
   }
 
@@ -116,6 +127,52 @@ class _AddProductsTab extends State<AddProductsTab>
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _loading = true; // Start loading
+        _error = ''; // Clear previous error
+      });
+      // get category id by the selected name
+      num selectedCategoryId = categories.firstWhere((element) => element.name == selectedCategory).id;
+      Map<String, num?> formatterNutritionalValues = {
+        "energy": nutritionalValues["Energy (KJ)"] ?? 0,
+        "totalFats": nutritionalValues["Total Fats (g)"] ?? 0,
+        "saturatedFats": nutritionalValues["Saturated Fats (g)"] ?? 0,
+        "transFats": nutritionalValues["Trans Fats (g)"] ?? 0,
+        "totalCarbohydrates": nutritionalValues["Total Carbohydrates (g)"] ?? 0,
+        "fibers": nutritionalValues["Fibers (g)"] ?? 0,
+        "sugars": nutritionalValues["Sugars (g)"] ?? 0,
+        "proteins": nutritionalValues["Protein (g)"] ?? 0,
+      };
+      var data = {
+        'name': name,
+        'description': description,
+        'categoryId': selectedCategoryId,
+        "pricePerQuantity": pricePerQuantity,
+        "volumePerQuantity": volumePerQuantity,
+        'soldByWeight': soldBy == _items[1] ? true : false,
+        'image': image != null ? base64Encode(image!.readAsBytesSync()) : null,
+        "marketId": currentUser?.market?.id,
+        'nutritionalValues': formatterNutritionalValues,
+      };
+      session_requests.post(
+        '/api/Product',
+        json.encode(data),
+      ).then((response) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          setState(() {
+            _loading = false;
+          });
+          const snackBar = SnackBar(
+            content: Text('Product has been successfully added!'),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        } else {
+          setState(() {
+            _error = 'Something went wrong. Please try again.';
+            _loading = false;
+          });
+        }
+      });
     }
   }
 
@@ -168,6 +225,7 @@ class _AddProductsTab extends State<AddProductsTab>
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
+                                ImageInput(passImage: passImage),
                                 TextFormField(
                                   decoration: const InputDecoration(
                                     labelText: "Name",
@@ -253,6 +311,42 @@ class _AddProductsTab extends State<AddProductsTab>
                                   },
                                 ),
                                 const SizedBox(height: 20),
+                                TextFormField(
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    labelText: "Volume per Quantity Unit",
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      volumePerQuantity = num.tryParse(value);
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a number';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    labelText: "Price per Quantity Unit",
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      pricePerQuantity = num.tryParse(value);
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a number';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 20),
                                 const Text(
                                   "Nutritional Values per 100g",
                                   textAlign: TextAlign.center,
@@ -274,6 +368,8 @@ class _AddProductsTab extends State<AddProductsTab>
                                   _error,
                                   style: const TextStyle(color: Colors.red),
                                 ),
+                                // Add keyboard height sized box
+                                const SizedBox(height: 100),
                               ],
                             ),
                           ),

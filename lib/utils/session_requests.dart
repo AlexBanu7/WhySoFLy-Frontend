@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  String base_url = 'http://192.168.5.106:5229';
+  String base_url = 'http://192.168.1.110:5229';
 
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
@@ -14,6 +14,18 @@ class Session {
 
   Future<http.Response> post(String path, dynamic data) async {
     http.Response response = await http.post(Uri.parse(base_url+path), body: data, headers: headers);
+    updateCookie(response);
+    return response;
+  }
+
+  Future<http.Response> put(String path, dynamic data) async {
+    http.Response response = await http.put(Uri.parse(base_url+path), body: data, headers: headers);
+    updateCookie(response);
+    return response;
+  }
+
+  Future<http.Response> delete(String path) async {
+    http.Response response = await http.delete(Uri.parse(base_url+path), headers: headers);
     updateCookie(response);
     return response;
   }

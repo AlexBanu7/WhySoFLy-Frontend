@@ -74,6 +74,7 @@ class _MapScreenState extends State<MapScreen> {
               infoWindow: InfoWindow(
                   title: 'Order at ${market.name}',
                   onTap: () {
+                    cartService.marketId = market.id;
                     Navigator.pushNamed(context, '/order', arguments: market);
                   }
               ),

@@ -5,6 +5,7 @@ import 'package:frontend/models/market.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/widgets/singup-dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
 
 import '../main.dart';
 
@@ -120,6 +121,7 @@ class _LoginDialog extends State<LoginDialog>
               Text(
                 error,
                 style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center,
               ),
               ElevatedButton(
                 onPressed: _login,
