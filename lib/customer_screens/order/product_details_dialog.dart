@@ -111,8 +111,13 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
           child: Center(
             child:ListView(
               children: [
+                product?.image != null ?
+                Image.memory(
+                  base64Decode(product!.image!.split(',').last),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                ) :
                 Image.asset(
-                  product?.image??'assets/images/question-man.png',
+                  'assets/images/question-man.png',
                   height: MediaQuery.of(context).size.height * 0.3,
                 ),
                 const SizedBox(height: 20),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
@@ -29,138 +30,6 @@ class _CheckoutPage extends State<CheckoutPage>
     List<DataRow> tableRows = [];
     for (CartItem cartItem in cartService.cartitems){
       tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
-        DataRow(cells: [
-          DataCell(Text(cartItem.name)),
-          DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
-          DataCell(Text(cartItem.price.toStringAsFixed(2))),
-        ]),
-      );tableRows.add(
         DataRow(cells: [
           DataCell(Text(cartItem.name)),
           DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
@@ -219,7 +88,10 @@ class _CheckoutPage extends State<CheckoutPage>
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-
+                        // Confirm order
+                        cartService.confirmOrder().then(() {
+                          // Navigator.pushNamed(context, '/order-confirmed');
+                        } as FutureOr Function(void value));
                       },
                       child: const Text('Confirm Order'),
                     ),

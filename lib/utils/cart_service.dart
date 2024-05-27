@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:frontend/main.dart';
 import 'package:frontend/models/cartitem.dart';
 
 import '../models/product.dart';
@@ -8,14 +10,7 @@ class CartService {
 
   int? marketId;
   double volume = 300; // in liters
-  List<CartItem> cartitems = [CartItem(
-      id:1,
-      productId: 132,
-      name: "Potato",
-      quantity: 1.2,
-      volume: 60,
-      price: 5.99
-  )];
+  List<CartItem> cartitems = [];
 
   void clearCart() {
     // clears the cart
@@ -74,4 +69,31 @@ class CartService {
     return volumeLeft;
   }
 
+  Future<void> confirmOrder() async {
+    Map<String, dynamic> data = {
+      "customerEmail": currentUser!.email.toString(),
+      "marketId": marketId.toString(),
+      "cartItems": cartitems.map((cartitem) => {
+        "name": cartitem.name,
+        "quantity": cartitem.quantity,
+        "volume": cartitem.volume,
+        "price": cartitem.price,
+        "productId": cartitem.productId.toString(),
+      }).toList()
+    };
+
+    print(json.encode(data));
+
+    var response = await session_requests.post(
+      '/api/Cart',
+      json.encode(data),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+
+    }
+    else {
+      throw Exception("Failed to confirm order");
+    }
+  }
 }
