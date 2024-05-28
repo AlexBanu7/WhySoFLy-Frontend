@@ -34,6 +34,17 @@ class _CheckoutPage extends State<CheckoutPage>
           DataCell(Text(cartItem.name)),
           DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
           DataCell(Text(cartItem.price.toStringAsFixed(2))),
+          DataCell(
+            Checkbox(
+              value: cartItem.accepted,
+              onChanged: (bool? value) {
+                cartService.setAccepted(cartItem, value!);
+                setState(() {
+
+                });
+              },
+            )
+          ),
         ]),
       );
     }
@@ -60,6 +71,7 @@ class _CheckoutPage extends State<CheckoutPage>
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Quantity')),
                     DataColumn(label: Text('Price')),
+                    DataColumn(label: Text('Photo')),
                   ],
                   rows: [
                     ..._generate_table_rows(),
@@ -84,14 +96,26 @@ class _CheckoutPage extends State<CheckoutPage>
                       ],
                     ),
                   ),
+                  const Spacer(),
+                  const Align(
+                    alignment: Alignment.center, // Center the children horizontally
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'Photo requests may increase order time',
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                      ],
+                    ),
+                  ),
                   const Spacer(), // Add space between the text and button
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
                         // Confirm order
-                        cartService.confirmOrder().then(() {
-                          // Navigator.pushNamed(context, '/order-confirmed');
-                        } as FutureOr Function(void value));
+                        cartService.confirmOrder().then((void value) {
+                          Navigator.pushNamed(context, '/cart');
+                        });
                       },
                       child: const Text('Confirm Order'),
                     ),

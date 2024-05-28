@@ -33,6 +33,7 @@ class _LogoutDialog extends State<LogoutDialog>
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       widget.onUpdate();
+      Navigator.pushNamed(context, "/");
     } else {
       // If the request was not successful, handle the error
       throw Exception('Request failed with status: ${response.statusCode}');

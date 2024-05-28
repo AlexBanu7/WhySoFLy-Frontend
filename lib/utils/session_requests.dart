@@ -1,10 +1,14 @@
 
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/web_socket_channel.dart';
+
 
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  String base_url = 'http://192.168.1.110:5229';
+  static String ip = '192.168.1.110:5229';
+  static String base_url = 'http://' + ip;
+  static String ws_url = 'ws://' + ip + '/ws';
 
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
@@ -28,6 +32,13 @@ class Session {
     http.Response response = await http.delete(Uri.parse(base_url+path), headers: headers);
     updateCookie(response);
     return response;
+  }
+
+  WebSocketChannel setUpChannel() {
+    WebSocketChannel _channel = WebSocketChannel.connect(
+      Uri.parse(ws_url),
+    );
+    return _channel;
   }
 
   void updateCookie(http.Response response) {

@@ -23,6 +23,7 @@ class _LoginDialog extends State<LoginDialog>
   final TextEditingController passwordController = TextEditingController();
 
   String error = '';
+  bool _obscureText = true;
 
   Future<void> _login() async {
     String email = emailController.text;
@@ -39,6 +40,8 @@ class _LoginDialog extends State<LoginDialog>
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      // Start Fresh
+      cartService.clearCart();
       var response = await session_requests.post(
         '/identity/userInfo',
         json.encode(email),
@@ -76,7 +79,7 @@ class _LoginDialog extends State<LoginDialog>
         setState(() {
           error = '';
         });
-        Navigator.pop(context);
+        Navigator.pushNamed(context, "/");
         const snackBar = SnackBar(
           content: Text('Welcome back!'),
         );
@@ -114,8 +117,20 @@ class _LoginDialog extends State<LoginDialog>
               const SizedBox(height: 16.0),
               TextField(
                 controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                obscureText: _obscureText,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                ),
               ),
               const SizedBox(height: 16.0),
               Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
@@ -58,7 +59,9 @@ class _MyHomePageState extends State<MyHomePage>
                     child: Transform.scale(
                       scale:0.4,
                       child:Image.asset(
-                        'assets/images/airplane.png', // Path to your image
+                        currentUser?.market != null
+                            ? 'assets/images/cloud.png'
+                            : 'assets/images/airplane.png', // Path to your image
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -73,7 +76,11 @@ class _MyHomePageState extends State<MyHomePage>
                   width: MediaQuery.of(context).size.width, // full width
                   padding: EdgeInsets.zero,
                   child: Image.asset(
-                    'assets/images/home-footer.png', // Path to your image
+                    currentUser?.market != null
+                        ? 'assets/images/manager-footer.png'
+                        : currentUser?.employee != null
+                          ? 'assets/images/employee-footer.png'
+                          : 'assets/images/home-footer.png',
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -20,6 +20,7 @@ class _SignupDialog extends State<SignupDialog>
   String _confirmPassword = '';
   String _error = '';
   bool _loading = false; // Track loading state
+  bool _obscureText = true;
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -49,7 +50,7 @@ class _SignupDialog extends State<SignupDialog>
         );
         if (response.statusCode >= 200 && response.statusCode < 300) {
           // Parse the JSON response body into a Dart object
-          Navigator.pop(context);
+          Navigator.pushNamed(context, "/");
           const snackBar = SnackBar(
             content: Text('Account created! You may log in.'),
           );
@@ -102,9 +103,19 @@ class _SignupDialog extends State<SignupDialog>
                 },
               ),
               TextFormField(
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: _obscureText,
+                decoration: InputDecoration(
                   labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -119,9 +130,19 @@ class _SignupDialog extends State<SignupDialog>
                 },
               ),
               TextFormField(
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: _obscureText,
+                decoration: InputDecoration(
                   labelText: 'Confirm Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {

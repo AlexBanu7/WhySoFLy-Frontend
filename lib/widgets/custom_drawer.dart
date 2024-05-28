@@ -60,6 +60,108 @@ class _CustomDrawer extends State<CustomDrawer>
         ),
       ]);
     }
+    List<Widget> customerSections = [
+      ListTile(
+        title: const Text('Home'),
+        onTap: () {
+          Navigator.pushNamed(context, "/");
+        },
+      ),
+      ListTile(
+        title: const Text('Map'),
+        onTap: () {
+          Navigator.pushNamed(context, "/map");
+        },
+      ),
+      ListTile(
+        title: const Text('Cart'),
+        onTap: () {
+          Navigator.pushNamed(context, "/cart");
+        },
+      ),
+      ListTile(
+        title: const Text('How to'),
+        onTap: () {
+          Navigator.pushNamed(context, "/howto");
+        },
+      ),
+      ListTile(
+        title: const Text('Become a Market Employee'),
+        onTap: () {
+          if (currentUser != null){
+            Navigator.pushNamed(context, "/register_employee");
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const LoginDialog();
+              },
+            );
+          }
+        },
+      ),
+      ListTile(
+        title: const Text('Register your Market'),
+        onTap: () {
+          if (currentUser != null){
+            Navigator.pushNamed(context, "/register_market");
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const LoginDialog();
+              },
+            );
+          }
+        },
+      ),
+    ];
+    List<Widget> managerSections = [
+      ListTile(
+        title: const Text('Home'),
+        onTap: () {
+          Navigator.pushNamed(context, "/");
+        },
+      ),
+      ListTile(
+        title: const Text('Manage Employees'),
+        onTap: () {
+          Navigator.pushNamed(context, "/manage_employees");
+        },
+      ),
+      ListTile(
+        title: const Text('Manage Products'),
+        onTap: () {
+          Navigator.pushNamed(context, "/manage_products");
+        },
+      ),
+      ListTile(
+        title: const Text('How to'),
+        onTap: () {
+          Navigator.pushNamed(context, "/howto");
+        },
+      ),
+    ];
+    List<Widget> employeeSections = [
+      ListTile(
+        title: const Text('Home'),
+        onTap: () {
+          Navigator.pushNamed(context, "/");
+        },
+      ),
+      ListTile(
+        title: const Text('Manage Orders'),
+        onTap: () {
+          Navigator.pushNamed(context, "/manage_orders");
+        },
+      ),
+      ListTile(
+        title: const Text('How to'),
+        onTap: () {
+          Navigator.pushNamed(context, "/howto");
+        },
+      ),
+    ];
 
     return Drawer(
       child: ListView(
@@ -83,75 +185,12 @@ class _CustomDrawer extends State<CustomDrawer>
               ),
             ),
           ),
-          ListTile(
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pushNamed(context, "/");
-            },
-          ),
-          ListTile(
-            title: const Text('Map'),
-            onTap: () {
-              Navigator.pushNamed(context, "/map");
-            },
-          ),
-          ListTile(
-            title: const Text('Cart'),
-            onTap: () {
-              Navigator.pushNamed(context, "/cart");
-            },
-          ),
-          ListTile(
-            title: const Text('Become a Market Employee'),
-            onTap: () {
-              // TODO: Uncomment
-              // if (currentUser != null){
-                Navigator.pushNamed(context, "/register_employee");
-              // } else {
-              //   showDialog(
-              //     context: context,
-              //     builder: (BuildContext context) {
-              //       return const LoginDialog();
-              //     },
-              //   );
-              // }
-            },
-          ),
-          ListTile(
-            title: const Text('Register your Market'),
-            onTap: () {
-              // TODO: Uncomment
-              // if (currentUser != null){
-              Navigator.pushNamed(context, "/register_market");
-              // } else {
-              //   showDialog(
-              //     context: context,
-              //     builder: (BuildContext context) {
-              //       return const LoginDialog();
-              //     },
-              //   );
-              // }
-            },
-          ),
-          ListTile(
-            title: const Text('Manage Employees'),
-            onTap: () {
-              Navigator.pushNamed(context, "/manage_employees");
-            },
-          ),
-          ListTile(
-            title: const Text('Manage Products'),
-            onTap: () {
-              Navigator.pushNamed(context, "/manage_products");
-            },
-          ),
-          ListTile(
-            title: const Text('How to'),
-            onTap: () {
-              Navigator.pushNamed(context, "/howto");
-            },
-          ),
-          // Add more ListTile widgets for additional menu items
+          if (currentUser == null || (currentUser?.market == null && currentUser?.employee == null))
+            ...customerSections,
+          if (currentUser?.market != null)
+            ...managerSections,
+          if (currentUser?.employee != null)
+            ...employeeSections,
         ],
       ),
     );

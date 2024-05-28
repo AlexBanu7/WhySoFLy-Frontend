@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 
 class AnimatedSizeImage extends StatefulWidget {
   const AnimatedSizeImage({super.key});
@@ -31,11 +32,20 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
             : 150.0 + (_controller.value * 50); // Adjust target size as needed
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, "/map");
+            Navigator.pushNamed(context, currentUser?.market != null ? "/manage_employees" : "/map");
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: currentUser?.market != null
+            ? [
+              Image.asset(
+                'assets/images/manager-plane.png',
+                width: size,
+                height: size,
+                fit: BoxFit.cover,
+              ),
+            ]
+            : [
               Image.asset(
                 'assets/images/cart.png', // Replace with your image path
                 width: size,
