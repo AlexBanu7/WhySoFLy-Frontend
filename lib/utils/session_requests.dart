@@ -10,6 +10,8 @@ class Session {
   static String base_url = 'http://' + ip;
   static String ws_url = 'ws://' + ip + '/ws';
 
+  WebSocketChannel? channel;
+
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
     updateCookie(response);
@@ -34,11 +36,15 @@ class Session {
     return response;
   }
 
-  WebSocketChannel setUpChannel() {
+  void setUpChannel() {
     WebSocketChannel _channel = WebSocketChannel.connect(
       Uri.parse(ws_url),
     );
-    return _channel;
+    channel = _channel;
+  }
+
+  void closeChannel() {
+    channel?.sink.close();
   }
 
   void updateCookie(http.Response response) {

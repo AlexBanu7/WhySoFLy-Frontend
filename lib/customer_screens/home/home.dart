@@ -61,7 +61,9 @@ class _MyHomePageState extends State<MyHomePage>
                       child:Image.asset(
                         currentUser?.market != null
                             ? 'assets/images/cloud.png'
-                            : 'assets/images/airplane.png', // Path to your image
+                            : currentUser?.employee != null
+                              ? 'assets/images/employee-airplane.png'
+                              : 'assets/images/airplane.png', // Path to your image
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -89,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage>
               const Center(
                 child: Padding(
                     padding: EdgeInsets.only(bottom: 200.0), // Adjust as needed
-                    child: AnimatedSizeImage()
+                    child: AnimatedSizeImage(),
                 ),
               ),
             ],

@@ -17,6 +17,7 @@ class CartService {
   int? employeeId;
 
   void clearCart() {
+    // TODO: Use when an order has been completed
     // clears the cart
     marketId = null;
     cartitems = [];

@@ -116,6 +116,7 @@ class _CheckoutPage extends State<CheckoutPage>
                         cartService.confirmOrder().then((void value) {
                           Navigator.pushNamed(context, '/cart');
                         });
+                        session_requests.setUpChannel();
                       },
                       child: const Text('Confirm Order'),
                     ),

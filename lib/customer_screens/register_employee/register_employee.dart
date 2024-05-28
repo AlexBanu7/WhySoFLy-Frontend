@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/customer_screens/register_employee/employee_confirmation_dialog.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/models/employee.dart';
 import 'package:frontend/models/user.dart';
 
 import '../../widgets/custom_appbar.dart';
@@ -61,10 +62,17 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
           if (response.statusCode >= 200 && response.statusCode < 300) {
             // Parse the JSON response body into a Dart object
             final jsonResponse = json.decode(response.body);
+            Employee employee = Employee(
+              id: jsonResponse['employee']['id'],
+              name: jsonResponse['employee']['name'],
+              status: jsonResponse['employee']['status'],
+              ordersDone: jsonResponse['employee']['ordersDone'],
+              marketName: jsonResponse['employee']['marketName'],
+            );
             currentUser = User(
                 email: jsonResponse['user']['email'],
                 role: jsonResponse['role'],
-                employee: jsonResponse['employee'],
+                employee: employee,
                 market: jsonResponse['market']
             );
             Navigator.pop(context);

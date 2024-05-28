@@ -239,12 +239,14 @@ class _ManageEmployeesPage extends State<ManageEmployeesPage>
                           context: context,
                           builder: (BuildContext context) {
                             return EmployeeCardDialog(employee: Employee(
-                              id: activeEmployee["id"],
-                              name: activeEmployee["userAccount"]["email"],
-                              status: activeEmployee["status"],
-                              ordersDone: activeEmployee["ordersDone"],
-                              marketName: activeEmployee["marketName"],
-                            ));
+                                id: activeEmployee["id"],
+                                name: activeEmployee["userAccount"]["email"],
+                                status: activeEmployee["status"],
+                                ordersDone: activeEmployee["ordersDone"],
+                                marketName: activeEmployee["marketName"],
+                              ),
+                              getActiveEmployees: getActiveEmployees,
+                            );
                           },
                         );
                       },

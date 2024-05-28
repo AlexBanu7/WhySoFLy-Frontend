@@ -47,8 +47,8 @@ class _LoginDialog extends State<LoginDialog>
         json.encode(email),
       );
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        // Parse the JSON response body into a Dart object
         final jsonResponse = json.decode(response.body);
+        // Create User from Request body
         currentUser = User(
           email: jsonResponse['user']['email'],
           role: jsonResponse['role'],
@@ -76,9 +76,15 @@ class _LoginDialog extends State<LoginDialog>
           );
           currentUser!.market = market;
         }
+        // Start WebSocket for Employees
+        if (currentUser!.employee != null) {
+          session_requests.setUpChannel();
+        }
+        // Clear error message
         setState(() {
           error = '';
         });
+        // Goto Dashboard
         Navigator.pushNamed(context, "/");
         const snackBar = SnackBar(
           content: Text('Welcome back!'),

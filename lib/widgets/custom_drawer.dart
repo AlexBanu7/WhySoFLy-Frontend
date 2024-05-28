@@ -89,7 +89,13 @@ class _CustomDrawer extends State<CustomDrawer>
         title: const Text('Become a Market Employee'),
         onTap: () {
           if (currentUser != null){
-            Navigator.pushNamed(context, "/register_employee");
+            if (cartService.backendId != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Page locked while an order is in progress.'))
+              );
+            } else {
+              Navigator.pushNamed(context, "/register_employee");
+            }
           } else {
             showDialog(
               context: context,
@@ -104,7 +110,13 @@ class _CustomDrawer extends State<CustomDrawer>
         title: const Text('Register your Market'),
         onTap: () {
           if (currentUser != null){
-            Navigator.pushNamed(context, "/register_market");
+            if (cartService.backendId != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Page locked while an order is in progress.'))
+              );
+            } else {
+              Navigator.pushNamed(context, "/register_market");
+            }
           } else {
             showDialog(
               context: context,
@@ -175,7 +187,8 @@ class _CustomDrawer extends State<CustomDrawer>
                 currentUser?.market != null ?
                 Colors.orange :
                     currentUser?.employee != null ?
-                        Colors.yellowAccent
+                        Colors.green
+                    
                     : Colors.lightBlueAccent
                         : Colors.black12,
               ),

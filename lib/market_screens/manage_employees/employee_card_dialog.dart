@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/models/employee.dart';
 import 'package:frontend/widgets/confirmation_dialog.dart';
 
 class EmployeeCardDialog extends StatefulWidget {
 
   final Employee employee;
+  final Function getActiveEmployees;
 
-  const EmployeeCardDialog({super.key, required this.employee});
+  const EmployeeCardDialog({super.key, required this.employee, required this.getActiveEmployees});
 
   @override
   _EmployeeCardDialog createState() => _EmployeeCardDialog();
@@ -15,8 +19,24 @@ class EmployeeCardDialog extends StatefulWidget {
 class _EmployeeCardDialog extends State<EmployeeCardDialog>
     with SingleTickerProviderStateMixin{
 
-  void _onConfirmRemove() {
+  Future<void> _onConfirmRemove() async {
+    Map<String, dynamic> data = {
+      'employeeId': widget.employee.id,
+    };
 
+    var response = await session_requests.post(
+      '/api/Market/rejectRequest',
+      json.encode(data),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // If the request was successful, update the pending invites
+      Navigator.pop(context);
+      widget.getActiveEmployees();
+    } else {
+      // If the request was not successful, handle the error
+      throw Exception('Request failed with status: ${response.statusCode}');
+    }
   }
 
   @override

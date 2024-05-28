@@ -32,7 +32,14 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
             : 150.0 + (_controller.value * 50); // Adjust target size as needed
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, currentUser?.market != null ? "/manage_employees" : "/map");
+            Navigator.pushNamed(
+                context,
+                currentUser?.market != null
+                    ? "/manage_employees"
+                    : currentUser?.employee != null
+                        ? "/manage_orders"
+                        : "/map"
+            );
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -45,21 +52,37 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
                 fit: BoxFit.cover,
               ),
             ]
-            : [
-              Image.asset(
-                'assets/images/cart.png', // Replace with your image path
-                width: size,
-                height: size,
-                fit: BoxFit.cover, // Adjust fit as needed
-              ),
-              Transform.scale(
-                scale: size/160,
-                child: const Text(
-                  'Start Shopping!', // Replace with your text
-                  style: TextStyle(fontSize: 20),
+            : currentUser?.employee != null
+              ? [
+                Image.asset(
+                  'assets/images/employee-cart.png', // Replace with your image path
+                  width: size,
+                  height: size,
+                  fit: BoxFit.cover, // Adjust fit as needed
                 ),
-              ),
-            ]
+                Transform.scale(
+                  scale: size/160,
+                  child: const Text(
+                    'Review Orders', // Replace with your text
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ]
+              : [
+                Image.asset(
+                   'assets/images/cart.png', // Replace with your image path
+                  width: size,
+                  height: size,
+                  fit: BoxFit.cover, // Adjust fit as needed
+                ),
+                Transform.scale(
+                  scale: size/160,
+                  child: const Text(
+                    'Start Shopping!', // Replace with your text
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ]
           ),
         );
       },
