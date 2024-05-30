@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _controller = TextEditingController();
   final _channel = WebSocketChannel.connect(
-    Uri.parse('ws://192.168.1.110:5229/ws'),
+    Uri.parse('ws://192.168.5.106:5229/ws'),
   );
 
   @override

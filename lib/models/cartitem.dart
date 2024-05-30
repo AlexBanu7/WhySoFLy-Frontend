@@ -4,8 +4,8 @@ class CartItem {
   int productId;
   String name;
   num quantity; // number of items/kg
-  double volume;
-  double price;
+  num volume;
+  num price;
   String? image;
 
   CartItem({

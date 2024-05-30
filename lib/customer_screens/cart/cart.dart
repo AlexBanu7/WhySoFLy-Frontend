@@ -19,19 +19,36 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPage extends State<CartPage>
-    with SingleTickerProviderStateMixin{
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver{
 
   int counter = 0;
   bool _loading = true;
 
-
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     getCart();
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      getCart();
+    }
+  }
+
   Future<void> getCart() async {
+    print("Getting cart");
+    setState(() {
+      _loading = true;
+    });
     await cartService.getCart();
     setState(() {
       _loading = false;
@@ -48,7 +65,7 @@ class _CartPage extends State<CartPage>
       body:
       _loading
           ? const Center(child: CircularProgressIndicator())
-          : cartService.state == "Gathering Items"
+          : cartService.state == "New" || cartService.state == "Gathering Items"
             ? InProgressCart()
             : cartService.state == "Pending Approval"
               ? PendingApprovalCart()

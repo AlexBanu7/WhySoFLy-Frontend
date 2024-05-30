@@ -1,4 +1,9 @@
 
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -6,7 +11,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  static String ip = '192.168.1.110:5229';
+  static String ip = '192.168.5.106:5229';
   static String base_url = 'http://' + ip;
   static String ws_url = 'ws://' + ip + '/ws';
 
@@ -36,11 +41,22 @@ class Session {
     return response;
   }
 
-  void setUpChannel() {
+  void setUpChannel(BuildContext context) {
     WebSocketChannel _channel = WebSocketChannel.connect(
       Uri.parse(ws_url),
     );
     channel = _channel;
+    _channel.stream.listen((message) {
+      final snackBar = SnackBar(content: Text(message.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
+    _channel.sink.add(currentUser?.email??"");
+  }
+
+  void sendMessage(String message) {
+    channel?.sink.add(json.encode({
+        "command": message
+    }));
   }
 
   void closeChannel() {

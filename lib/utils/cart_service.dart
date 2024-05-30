@@ -37,9 +37,12 @@ class CartService {
     }
     // Add to cart
     // If cart has a backendId, add in backend instead
+    print(backendId);
     if (backendId != null) {
+      print("Adding to backend cart");
       addToBackendCart(product, quantity);
     } else {
+      print("Adding to local cart");
       if (!cartitems.any((cartitem) => cartitem.productId == product.id)) {
         CartItem cartItem = CartItem(
             id:Random().nextInt(9999),
@@ -73,7 +76,7 @@ class CartService {
     };
 
     var response = await session_requests.post(
-      '/api/CartItem',
+      '/api/Cart/CartItem',
       json.encode(data),
     );
 
@@ -121,7 +124,7 @@ class CartService {
         "volume": cartitem.volume,
         "price": cartitem.price,
         "productId": cartitem.productId.toString(),
-        "accepted": cartitem.accepted
+        "accepted": !cartitem.accepted
       }).toList()
     };
 
@@ -143,13 +146,16 @@ class CartService {
       return;
     }
     var response = await session_requests.post(
-      '/api/CartByCustomerEmail',
+      '/api/Cart/CartByCustomerEmail',
       json.encode(currentUser?.email)
     );
+    print(response.statusCode);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      print("Got cart");
       clearCart();
       var body = json.decode(response.body);
+      print(body);
       backendId = body['id'];
       state = body['state'];
       employeeId = body['employeeId'];
