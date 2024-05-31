@@ -8,8 +8,9 @@ class ImageInput extends StatefulWidget {
 
   final void Function(File) passImage;
   final String? initialImage;
+  final File? initialImageFile;
 
-  const ImageInput({Key? key, required this.passImage, this.initialImage}) : super(key: key);
+  const ImageInput({Key? key, required this.passImage, this.initialImage, this.initialImageFile}) : super(key: key);
 
   @override
   State<ImageInput> createState() => _ImageInput();
@@ -60,6 +61,8 @@ class _ImageInput extends State<ImageInput> {
                   base64Decode(widget.initialImage!.split(',').last),
                   height: MediaQuery.of(context).size.height * 0.3,
                 )
+                : widget.initialImageFile != null
+                ? Image.file(widget.initialImageFile!, fit: BoxFit.cover)
                 : const Text('Please select an image'),
           )
         ]),

@@ -28,6 +28,8 @@ class _LogoutDialog extends State<LogoutDialog>
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       currentUser = null;
+      cartService.clearCart();
+      session_requests.closeChannel();
       const snackBar = SnackBar(
         content: Text('See you soon!'),
       );

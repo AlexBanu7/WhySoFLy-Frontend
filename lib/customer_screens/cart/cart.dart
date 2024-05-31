@@ -49,7 +49,7 @@ class _CartPage extends State<CartPage>
     setState(() {
       _loading = true;
     });
-    await cartService.getCart();
+    await cartService.getCart(true);
     setState(() {
       _loading = false;
     });
@@ -68,7 +68,7 @@ class _CartPage extends State<CartPage>
           : cartService.state == "New" || cartService.state == "Gathering Items"
             ? InProgressCart()
             : cartService.state == "Pending Approval"
-              ? PendingApprovalCart()
+              ? PendingApprovalCart() // NOT YET IMPLEMENTED
               : cartService.cartitems.isNotEmpty
                 ? FilledCart(onUpdate: () {
                     setState(() {

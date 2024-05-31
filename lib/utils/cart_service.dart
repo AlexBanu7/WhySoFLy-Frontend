@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:frontend/main.dart';
@@ -81,6 +82,7 @@ class CartService {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
+      session_requests.sendMessage("Add To Cart");
     }
     else {
       throw Exception("Failed to add to cart");
@@ -134,21 +136,30 @@ class CartService {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      getCart();
+      getCart(true);
     }
     else {
       throw Exception("Failed to confirm order");
     }
   }
 
-  Future<void> getCart() async {
+  Future<void> getCart(bool forCustomer) async {
     if (currentUser == null) {
       return;
     }
-    var response = await session_requests.post(
-      '/api/Cart/CartByCustomerEmail',
-      json.encode(currentUser?.email)
-    );
+    Response response;
+    if (forCustomer){
+      response = await session_requests.post(
+          '/api/Cart/ByCustomerEmail',
+          json.encode(currentUser?.email)
+      );
+    } else {
+      response = await session_requests.post(
+          '/api/Cart/ByEmployeeId',
+          json.encode(currentUser?.employee?.id)
+      );
+    }
+
     print(response.statusCode);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -178,6 +189,27 @@ class CartService {
     }
     else if (response.statusCode != 404) {
       throw Exception("Failed to get cart");
+    }
+  }
+
+  Future<void> patchCartItemsPhotos(Map<int, File?> photos) async {
+    Map<String, dynamic> data = {
+      "cartId": backendId,
+      "cartItems": photos.entries.map((entry) => {
+        "id": entry.key,
+        "image": base64Encode(entry.value!.readAsBytesSync())
+      }).toList()
+    };
+
+    var response = await session_requests.put(
+      '/api/Cart/AttachPhotos',
+      json.encode(data),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+    }
+    else {
+      throw Exception("Failed to attach photos to cart items");
     }
   }
 }

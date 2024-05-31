@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class Session {
   static String ws_url = 'ws://' + ip + '/ws';
 
   WebSocketChannel? channel;
+  final StreamController<String> wsController = StreamController.broadcast();
 
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
@@ -47,8 +49,18 @@ class Session {
     );
     channel = _channel;
     _channel.stream.listen((message) {
-      final snackBar = SnackBar(content: Text(message.toString()));
+      final snackBar = SnackBar(
+          content: Text(message.toString()),
+          duration: Duration(days: 1), // Set a long duration
+          action: SnackBarAction(
+            label: 'Close',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          ),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      wsController.add(message.toString());
     });
     _channel.sink.add(currentUser?.email??"");
   }
@@ -60,6 +72,7 @@ class Session {
   }
 
   void closeChannel() {
+    print("Closing socket");
     channel?.sink.close();
   }
 

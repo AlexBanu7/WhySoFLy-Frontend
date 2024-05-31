@@ -20,6 +20,9 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:frontend/models/user.dart';
 import 'package:uuid/uuid.dart';
 
+import 'employee_screens/active_assignment/active_assignment.dart';
+import 'employee_screens/review_orders/review_orders.dart';
+
 
 void main() {
   final GoogleMapsFlutterPlatform mapsImplementation =
@@ -90,6 +93,8 @@ class MyApp extends StatelessWidget {
         '/manage_employees': (context) => const ManageEmployeesPage(),
         '/manage_products': (context) => const ManageProductsPage(),
         '/edit-product': (context) => EditProductPage(arguments: ModalRoute.of(context)?.settings.arguments),
+        '/active_assignment': (context) => const ActiveAssignmentPage(),
+        '/review_orders': (context) => const ReviewOrdersPage(),
       },
     );
   }

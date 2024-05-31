@@ -70,7 +70,14 @@ class _CustomDrawer extends State<CustomDrawer>
       ListTile(
         title: const Text('Map'),
         onTap: () {
-          Navigator.pushNamed(context, "/map");
+          if (cartService.backendId != null) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Page locked while an order is in progress.'))
+            );
+          } else {
+            Navigator.pushNamed(context, "/map");
+          }
         },
       ),
       ListTile(
@@ -90,6 +97,7 @@ class _CustomDrawer extends State<CustomDrawer>
         onTap: () {
           if (currentUser != null){
             if (cartService.backendId != null) {
+              Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Page locked while an order is in progress.'))
               );
@@ -111,6 +119,7 @@ class _CustomDrawer extends State<CustomDrawer>
         onTap: () {
           if (currentUser != null){
             if (cartService.backendId != null) {
+              Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Page locked while an order is in progress.'))
               );
@@ -162,9 +171,29 @@ class _CustomDrawer extends State<CustomDrawer>
         },
       ),
       ListTile(
-        title: const Text('Manage Orders'),
+        title: const Text('Review Orders'),
         onTap: () {
-          Navigator.pushNamed(context, "/manage_orders");
+          if (currentUser?.employee?.status == "Pending Approval") {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Your employee status is still pending approval'))
+            );
+          } else {
+            Navigator.pushNamed(context, "/review_orders");
+          }
+        },
+      ),
+      ListTile(
+        title: const Text('Active Assignment'),
+        onTap: () {
+          if (currentUser?.employee?.status == "Pending Approval") {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Your employee status is still pending approval'))
+            );
+          } else {
+            Navigator.pushNamed(context, "/active_assignment");
+          }
         },
       ),
       ListTile(

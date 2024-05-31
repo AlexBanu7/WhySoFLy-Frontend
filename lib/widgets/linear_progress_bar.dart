@@ -19,7 +19,7 @@ class _LinearProgressBar extends State<LinearProgressBar>
   late Animation<double> _animation;
 
   Color backgroundColor = Colors.grey;
-  Color valueColor = Colors.blue;
+  Color valueColor = Colors.greenAccent;
 
   @override
   void initState() {
