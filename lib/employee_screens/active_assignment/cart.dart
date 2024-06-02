@@ -8,7 +8,10 @@ import 'package:frontend/main.dart';
 
 
 class EmployeeCart extends StatefulWidget {
-  const EmployeeCart({super.key});
+
+  final VoidCallback updateWidget;
+
+  const EmployeeCart({super.key, required this.updateWidget});
 
   @override
   State<EmployeeCart> createState() => _EmployeeCart();
@@ -46,9 +49,9 @@ class _EmployeeCart extends State<EmployeeCart>
     return
         _loading 
             ? Center(child: CircularProgressIndicator())
-            : cartService.state != "Gathering Items"
-                ? FetchProductStage(updateWidget: updateWidget)
-                : cartService.state != "Preparing For Approval"
+            : cartService.state == "Gathering Items"
+                ? FetchProductStage(updateWidget: updateWidget, updatePage: widget.updateWidget)
+                : cartService.state == "Preparing For Approval"
                     ? PreparingForApprovalStage(updateWidget: updateWidget)
                     : WaitingOnCustomerToApproveStage()
     ;

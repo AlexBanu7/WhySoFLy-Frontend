@@ -37,8 +37,10 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
 
       Map<String, String> data = {
         'email': currentUser?.email??"",
-        'invitation_key': _key,
+        'invitationKey': _key,
       };
+
+      print(json.encode(data));
 
       var response = await session_requests.post(
         '/api/Market/claimInvite',

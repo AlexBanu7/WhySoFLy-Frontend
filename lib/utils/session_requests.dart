@@ -12,12 +12,12 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  static String ip = '192.168.5.106:5229';
+  static String ip = '192.168.0.163:5229';
   static String base_url = 'http://' + ip;
   static String ws_url = 'ws://' + ip + '/ws';
 
   WebSocketChannel? channel;
-  final StreamController<String> wsController = StreamController.broadcast();
+  Stream? channelBroadcastStream;
 
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
@@ -48,24 +48,26 @@ class Session {
       Uri.parse(ws_url),
     );
     channel = _channel;
-    _channel.stream.listen((message) {
+    channelBroadcastStream = _channel.stream.map((message) {
+      print('Received message: $message');
       final snackBar = SnackBar(
-          content: Text(message.toString()),
-          duration: Duration(days: 1), // Set a long duration
-          action: SnackBarAction(
-            label: 'Close',
-            onPressed: () {
-              // Some code to undo the change.
-            },
-          ),
+        content: Text(message.toString()),
+        duration: const Duration(days: 1), // Set a long duration
+        action: SnackBarAction(
+          label: 'Close',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      wsController.add(message.toString());
-    });
+      return message.toString();
+    }).asBroadcastStream();
     _channel.sink.add(currentUser?.email??"");
   }
 
   void sendMessage(String message) {
+    print("Sending message: $message");
     channel?.sink.add(json.encode({
         "command": message
     }));

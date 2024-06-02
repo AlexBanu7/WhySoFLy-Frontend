@@ -76,10 +76,8 @@ class _LoginDialog extends State<LoginDialog>
           );
           currentUser!.market = market;
         }
-        // Start WebSocket for Employees
-        if (currentUser!.employee != null) {
-          session_requests.setUpChannel(context);
-        }
+        // Start WebSocket
+        session_requests.setUpChannel(context);
         // Clear error message
         setState(() {
           error = '';

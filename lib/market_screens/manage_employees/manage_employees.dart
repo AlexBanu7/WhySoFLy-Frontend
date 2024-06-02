@@ -45,7 +45,7 @@ class _ManageEmployeesPage extends State<ManageEmployeesPage>
       _loadingPendingInvites = true;
     });
     Map<String, dynamic> data = {
-      'marketId': 12,
+      'marketId': currentUser?.market?.id,
       'pending': true,
     };
 
@@ -71,7 +71,7 @@ class _ManageEmployeesPage extends State<ManageEmployeesPage>
       _loadingActiveEmployees = true;
     });
     Map<String, dynamic> data = {
-      'marketId': 12,
+      'marketId': currentUser?.market?.id,
       'pending': false,
     };
 

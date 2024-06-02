@@ -107,7 +107,7 @@ class _PreparingForApprovalStage extends State<PreparingForApprovalStage>
                     columns: const [
                       DataColumn(label: Text('Name')),
                       DataColumn(label: Text('Quantity')),
-                      DataColumn(label: Text('Gathered')),
+                      DataColumn(label: Text('Ready')),
                     ],
                     rows: [
                       ..._generate_table_rows(),

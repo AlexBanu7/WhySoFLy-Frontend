@@ -94,19 +94,20 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
             fit: BoxFit.cover,
           ),
         ),
-        child: StreamBuilder<String>(
-          stream: session_requests.wsController.stream,
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        child: StreamBuilder(
+          stream: session_requests.channelBroadcastStream,
+          builder: (context, snapshot) {
+            print("heya, ich bin builder");
             if (snapshot.hasData) {
               return _loading ?
               const Center(child: CircularProgressIndicator()) : currentUser?.employee?.status == "Available" ?
               EmployeePause(updateWidget: updateWidget) : currentUser?.employee?.status == "Break" ?
-              EmployeeResume(updateWidget: updateWidget) : EmployeeCart();
+              EmployeeResume(updateWidget: updateWidget) : EmployeeCart(updateWidget: updateWidget);
             } else {
               return _loading ?
               const Center(child: CircularProgressIndicator()) : currentUser?.employee?.status == "Available" ?
               EmployeePause(updateWidget: updateWidget) : currentUser?.employee?.status == "Break" ?
-              EmployeeResume(updateWidget: updateWidget) : EmployeeCart();
+              EmployeeResume(updateWidget: updateWidget) : EmployeeCart(updateWidget: updateWidget);
             }
           },
         )

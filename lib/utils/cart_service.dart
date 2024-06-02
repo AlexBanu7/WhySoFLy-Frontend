@@ -52,7 +52,7 @@ class CartService {
             quantity: quantity,
             volume: quantity * product.volumePerQuantity,
             price: quantity * product.pricePerQuantity,
-            accepted: true
+            accepted: false
         );
         cartitems.add(cartItem);
       } else {
