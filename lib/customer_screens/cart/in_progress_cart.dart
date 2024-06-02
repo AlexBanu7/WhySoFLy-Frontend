@@ -71,15 +71,15 @@ class _InProgressCart extends State<InProgressCart>
         width: MediaQuery.of(context).size.width,
         child: Column(
             children: [
-              SizedBox(height:40),
+              const SizedBox(height:40),
               const Text("Your Cart Items are being gathered. Please wait."),
-              SizedBox(height:10),
-              Padding(
+              const SizedBox(height:10),
+              const Padding(
                 padding: EdgeInsets.all(10),
                 child: LinearProgressBar()
               ),
-              SizedBox(height:10),
-              Container(
+              const SizedBox(height:10),
+              SizedBox(
                 height: 400,
                 child: Accordion(
                     headerBackgroundColorOpened: Colors.transparent,
@@ -106,12 +106,12 @@ class _InProgressCart extends State<InProgressCart>
                   ]
                 )
               ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(20),
+              const Spacer(),
+              const Padding(
+                padding: EdgeInsets.all(20),
                 child: Text(
                   'At this stage, more products can be added. Order Time will increase. They cannot be verified by photography.',
-                  style: const TextStyle(fontSize: 12.0),
+                  style: TextStyle(fontSize: 12.0),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -119,7 +119,7 @@ class _InProgressCart extends State<InProgressCart>
                 onPressed: _navigate_to_order_page,
                 child: const Text('Add more Items'),
               ),
-              SizedBox(height:40)
+              const SizedBox(height:40)
             ]
         )
     );

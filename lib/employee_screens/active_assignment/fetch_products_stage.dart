@@ -8,10 +8,7 @@ import 'package:frontend/widgets/confirmation_dialog.dart';
 
 class FetchProductStage extends StatefulWidget {
 
-  final VoidCallback updateWidget;
-  final VoidCallback updatePage;
-
-  const FetchProductStage({super.key, required this.updateWidget, required this.updatePage});
+  const FetchProductStage({super.key});
 
   @override
   State<FetchProductStage> createState() => _FetchProductStage();
@@ -102,7 +99,7 @@ class _FetchProductStage extends State<FetchProductStage>
                             return;
                           }
                           session_requests.sendMessage("Fetched Products");
-                          widget.updatePage();
+                          nav.refreshAndPushNamed(context, ["/active_assignment"]);
                         },
                         child: const Text('Next Step'),
                       ),

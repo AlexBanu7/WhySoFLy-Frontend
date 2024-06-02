@@ -43,12 +43,12 @@ class Session {
     return response;
   }
 
-  void setUpChannel(BuildContext context) {
+  void setUpChannel(BuildContext context, String redirectOnReceive) {
     WebSocketChannel _channel = WebSocketChannel.connect(
       Uri.parse(ws_url),
     );
     channel = _channel;
-    channelBroadcastStream = _channel.stream.map((message) {
+    _channel.stream.listen((message) async {
       print('Received message: $message');
       final snackBar = SnackBar(
         content: Text(message.toString()),
@@ -60,9 +60,9 @@ class Session {
           },
         ),
       );
+      nav.refreshAndPushNamed(context, [redirectOnReceive]);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return message.toString();
-    }).asBroadcastStream();
+    });
     _channel.sink.add(currentUser?.email??"");
   }
 

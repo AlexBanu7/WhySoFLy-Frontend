@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:frontend/customer_screens/cart/pending_approval_cart.dart';
 import 'package:frontend/customer_screens/cart/qr_code_cart.dart';
+import 'package:frontend/customer_screens/cart/removal_cart.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/customer_screens/cart/empty_cart.dart';
 import 'package:frontend/customer_screens/cart/filled_cart.dart';
@@ -20,7 +21,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPage extends State<CartPage>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver{
+    with SingleTickerProviderStateMixin{
 
   int counter = 0;
   bool _loading = true;
@@ -28,21 +29,7 @@ class _CartPage extends State<CartPage>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     getCart();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      getCart();
-    }
   }
 
   Future<void> getCart() async {
@@ -59,26 +46,52 @@ class _CartPage extends State<CartPage>
 
   @override
   Widget build(BuildContext context) {
+    Widget? loadedWidget;
+    switch(cartService.state) {
+      case "Gathering Items":
+        loadedWidget = InProgressCart();
+        break;
+      case "New":
+        loadedWidget = InProgressCart();
+        break;
+      case "Preparing For Approval":
+        loadedWidget = InProgressCart();
+        break;
+      case "Pending Approval":
+        loadedWidget = PendingApprovalCart();
+        break;
+      case "Removal":
+        loadedWidget = RemovalCart();
+        break;
+      case "Approved":
+        loadedWidget = QRCodeCart();
+        break;
+      case "Finished":
+        loadedWidget = Text("Thank you!"); // TODO: Implement!
+        break;
+      default:
+        switch(cartService.cartitems.isNotEmpty) {
+          case true:
+            loadedWidget = FilledCart(onUpdate: () {
+              setState(() {
+                counter++;
+              });
+            });
+            break;
+          case false:
+            loadedWidget = const EmptyCart();
+            break;
+        }
+        break;
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Your Shopping Cart"),
       drawer: const CustomDrawer(),
-      body: const QRCodeCart()
-      // _loading
-      //     ? const Center(child: CircularProgressIndicator())
-      //     : cartService.state == "New" || cartService.state == "Gathering Items"
-      //       ? InProgressCart()
-      //       : cartService.state == "Pending Approval"
-      //         ? PendingApprovalCart() // NOT YET IMPLEMENTED
-      //         : cartService.state == "Approved"
-      //           ?
-      //             : cartService.cartitems.isNotEmpty
-      //             ? FilledCart(onUpdate: () {
-      //                 setState(() {
-      //                   counter++;
-      //                 });
-      //               })
-      //             : const EmptyCart()
+      body:
+      _loading
+          ? const Center(child: CircularProgressIndicator())
+          : loadedWidget
     );
   }
 }

@@ -10,9 +10,7 @@ import 'package:frontend/widgets/image_input.dart';
 
 class PreparingForApprovalStage extends StatefulWidget {
 
-  final VoidCallback updateWidget;
-
-  const PreparingForApprovalStage({super.key, required this.updateWidget});
+  const PreparingForApprovalStage({super.key});
 
   @override
   State<PreparingForApprovalStage> createState() => _PreparingForApprovalStage();
@@ -106,7 +104,7 @@ class _PreparingForApprovalStage extends State<PreparingForApprovalStage>
                 child:DataTable(
                     columns: const [
                       DataColumn(label: Text('Name')),
-                      DataColumn(label: Text('Quantity')),
+                      DataColumn(label: Text('Photo')),
                       DataColumn(label: Text('Ready')),
                     ],
                     rows: [
@@ -140,7 +138,7 @@ class _PreparingForApprovalStage extends State<PreparingForApprovalStage>
                           }
                           cartService.patchCartItemsPhotos(photos);
                           session_requests.sendMessage("Attached Photos");
-                          widget.updateWidget();
+                          nav.refreshAndPushNamed(context, ['/active_assignment']);
                         },
                         child: const Text('Next Step'),
                       ),

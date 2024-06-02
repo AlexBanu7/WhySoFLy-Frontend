@@ -20,6 +20,7 @@ class _FilledCart extends State<FilledCart>
 
   @override
   void initState() {
+    print("Inited filled cart");
     super.initState();
   }
 
@@ -196,7 +197,7 @@ class _FilledCart extends State<FilledCart>
                   child: ElevatedButton(
                     onPressed: () {
                       if (currentUser != null){
-                        Navigator.pushNamed(context, '/checkout');
+                        nav.refreshAndPushNamed(context, ['/cart', '/checkout']);
                       } else {
                         showDialog(
                           context: context,

@@ -23,9 +23,14 @@ class _LoginDialog extends State<LoginDialog>
   final TextEditingController passwordController = TextEditingController();
 
   String error = '';
+  bool _loading = false;
   bool _obscureText = true;
 
   Future<void> _login() async {
+    setState(() {
+      error = '';
+      _loading = true;
+    });
     String email = emailController.text;
     String password = passwordController.text;
 
@@ -77,10 +82,19 @@ class _LoginDialog extends State<LoginDialog>
           currentUser!.market = market;
         }
         // Start WebSocket
-        session_requests.setUpChannel(context);
+        String redirectOnReceive;
+        if (currentUser?.employee != null) {
+          redirectOnReceive = "/active_assignment";
+        } else if (currentUser?.market != null) {
+          redirectOnReceive = "/home";
+        } else {
+          redirectOnReceive = "/cart";
+        }
+        session_requests.setUpChannel(context, redirectOnReceive);
         // Clear error message
         setState(() {
           error = '';
+          _loading = false;
         });
         // Goto Dashboard
         Navigator.pushNamed(context, "/");
@@ -95,6 +109,7 @@ class _LoginDialog extends State<LoginDialog>
     } else {
       setState(() {
         error = 'Invalid email or password. Please try again.';
+        _loading = false;
       });
     }
   }
@@ -142,6 +157,8 @@ class _LoginDialog extends State<LoginDialog>
                 style: TextStyle(color: Colors.red),
                 textAlign: TextAlign.center,
               ),
+              if (_loading)
+                const CircularProgressIndicator(),
               ElevatedButton(
                 onPressed: _login,
                 child: const Text('Log in'),

@@ -33,12 +33,12 @@ class _QRCodeCart extends State<QRCodeCart>
               const Text("Show this QR Code on premise to complete your order."),
               const SizedBox(height: 40),
               QrImageView(
-                data: '/api/Cart/Finish/${cartService.backendId}',
+                data: '/api/Cart/FinishOrder/${cartService.backendId}',
                 version: QrVersions.auto,
                 size: 200.0,
               ),
               Spacer(),
-              Image.asset("assets/images/scan.png"),
+              Image.asset("assets/images/generateqr.png"),
               const SizedBox(height: 40),
             ]
         )

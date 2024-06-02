@@ -32,14 +32,15 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
             : 150.0 + (_controller.value * 50); // Adjust target size as needed
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context,
-                currentUser?.market != null
-                    ? "/manage_employees"
-                    : currentUser?.employee != null
-                        ? "/review_orders"
-                        : "/map"
-            );
+            if (currentUser?.market != null) {
+              nav.refreshAndPushNamed(context, ["/manage_employees"]);
+            }
+            else if (currentUser?.employee != null) {
+              nav.refreshAndPushNamed(context, ["/review_orders"]);
+            }
+            else {
+              nav.refreshAndPushNamed(context, ["/map"]);
+            }
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

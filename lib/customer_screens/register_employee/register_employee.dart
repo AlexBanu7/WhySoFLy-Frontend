@@ -77,7 +77,6 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
                 employee: employee,
                 market: jsonResponse['market']
             );
-            Navigator.pop(context);
             const snackBar = SnackBar(
               content: Text('Your request has been sent! You will be notified when it is approved.'),
             );

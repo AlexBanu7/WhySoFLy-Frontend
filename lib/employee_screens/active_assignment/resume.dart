@@ -11,9 +11,7 @@ import 'package:frontend/widgets/custom_drawer.dart';
 
 class EmployeeResume extends StatefulWidget {
 
-  final VoidCallback updateWidget;
-
-  const EmployeeResume({super.key, required this.updateWidget});
+  const EmployeeResume({super.key});
 
   @override
   State<EmployeeResume> createState() => _EmployeeResume();
@@ -28,7 +26,7 @@ class _EmployeeResume extends State<EmployeeResume>
       json.encode(currentUser?.email),
     );
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      widget.updateWidget();
+      nav.refreshAndPushNamed(context, ["/active_assignment"]);
     } else {
       // If the request was not successful, handle the error
       throw Exception('Request failed with status: ${response.statusCode}');

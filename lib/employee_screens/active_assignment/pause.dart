@@ -3,17 +3,11 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
-import 'package:frontend/models/employee.dart';
-import 'package:frontend/models/user.dart';
-import 'package:frontend/widgets/custom_appbar.dart';
-import 'package:frontend/widgets/custom_drawer.dart';
 
 
 class EmployeePause extends StatefulWidget {
 
-  final VoidCallback updateWidget;
-
-  const EmployeePause({super.key, required this.updateWidget});
+  const EmployeePause({super.key});
 
   @override
   State<EmployeePause> createState() => _EmployeePause();
@@ -28,7 +22,7 @@ class _EmployeePause extends State<EmployeePause>
       json.encode(currentUser?.email),
     );
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      widget.updateWidget();
+      nav.refreshAndPushNamed(context, ["/active_assignment"]);
     } else {
       // If the request was not successful, handle the error
       throw Exception('Request failed with status: ${response.statusCode}');

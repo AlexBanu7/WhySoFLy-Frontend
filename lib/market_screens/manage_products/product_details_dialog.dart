@@ -118,6 +118,7 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
               color: Colors.red,
               iconSize: 30,
               onPressed: () {
+                nav.refreshAndPushNamed(context, ['/manage_products']);
                 Navigator.pushNamed(
                   context,
                   '/edit-product',

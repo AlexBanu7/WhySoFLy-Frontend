@@ -21,6 +21,8 @@ class CheckoutPage extends StatefulWidget {
 class _CheckoutPage extends State<CheckoutPage>
     with SingleTickerProviderStateMixin{
 
+  bool _loading = false;
+
   @override
   void initState() {
     super.initState();
@@ -31,7 +33,16 @@ class _CheckoutPage extends State<CheckoutPage>
     for (CartItem cartItem in cartService.cartitems){
       tableRows.add(
         DataRow(cells: [
-          DataCell(Text(cartItem.name)),
+          DataCell(
+            Container(
+              width: 70,
+                child: Text(
+                  cartItem.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+            ),
+          ),
           DataCell(Text(cartItem.quantity.toStringAsFixed(2))),
           DataCell(Text(cartItem.price.toStringAsFixed(2))),
           DataCell(
@@ -65,8 +76,9 @@ class _CheckoutPage extends State<CheckoutPage>
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height - 300,
-            child: SingleChildScrollView(
-              child:DataTable(
+            child: DataTable(
+                  dataRowMaxHeight: 70,
+                  dataRowMinHeight: 70,
                   columns: const [
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Quantity')),
@@ -77,7 +89,6 @@ class _CheckoutPage extends State<CheckoutPage>
                     ..._generate_table_rows(),
                   ]
               ),
-            )
           ),
           Expanded(
             child:Container(
@@ -109,18 +120,31 @@ class _CheckoutPage extends State<CheckoutPage>
                     ),
                   ),
                   const Spacer(), // Add space between the text and button
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Confirm order
-                        cartService.confirmOrder().then((void value) {
-                          session_requests.sendMessage("Checkout Customer");
-                          Navigator.pushNamed(context, '/cart');
-                        });
-                      },
-                      child: const Text('Confirm Order'),
+                  if (_loading)
+                    const CircularProgressIndicator(),
+                  if (_loading)
+                    const Text(
+                      "Your order will be picked up soon!",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                        fontStyle: FontStyle.italic
+                      )
                     ),
-                  ),
+                  if (!_loading)
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Confirm order
+                          cartService.confirmOrder().then((void value) {
+                            session_requests.sendMessage("Checkout Customer");
+                          });
+                          setState(() {
+                            _loading = true;
+                          });
+                        },
+                        child: const Text('Confirm Order'),
+                      ),
+                    ),
                 ],
               ),
             )

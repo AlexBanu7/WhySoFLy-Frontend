@@ -13,6 +13,7 @@ import 'package:frontend/market_screens/manage_employees/manage_employees.dart';
 import 'package:frontend/market_screens/manage_products/edit_product.dart';
 import 'package:frontend/market_screens/manage_products/manage_products.dart';
 import 'package:frontend/utils/cart_service.dart';
+import 'package:frontend/utils/navigation.dart';
 import 'package:frontend/utils/session_requests.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
@@ -68,6 +69,7 @@ Future<AndroidMapRenderer?> initializeMapRenderer() async {
 User? currentUser;
 CartService cartService = CartService();
 Session session_requests = Session();
+Navigation nav = Navigation();
 Uuid uuid = Uuid();
 
 class MyApp extends StatelessWidget {

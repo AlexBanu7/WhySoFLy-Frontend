@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:frontend/employee_screens/active_assignment/cart.dart';
 import 'package:frontend/employee_screens/active_assignment/pause.dart';
+import 'package:frontend/employee_screens/active_assignment/qr_scan.dart';
 import 'package:frontend/employee_screens/active_assignment/resume.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/models/employee.dart';
@@ -20,72 +21,66 @@ class ActiveAssignmentPage extends StatefulWidget {
 }
 
 class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
-    with SingleTickerProviderStateMixin, WidgetsBindingObserver{
+    with SingleTickerProviderStateMixin{
 
   bool _loading = true;
   int counter = 0;
 
-  Future<void> updateWidget() async {
-    print("Calling updateWidget");
-    await updateInfo();
-  }
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     updateInfo();
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      updateInfo();
-    }
-  }
-
   Future<void> updateInfo () async {
-    print("Loading...");
     setState(() {
       _loading = true;
     });
-    var response = await session_requests.post(
-      '/identity/userInfo',
-      json.encode(currentUser?.email),
-    );
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      final jsonResponse = json.decode(response.body);
-      // Create User from Request body
-      currentUser = User(
-        email: jsonResponse['user']['email'],
-        role: jsonResponse['role'],
+    await Future.delayed(const Duration(seconds: 1), () async {
+      var response = await session_requests.post(
+        '/identity/userInfo',
+        json.encode(currentUser?.email),
       );
-      Employee employee = Employee(
-        id: jsonResponse['employee']['id'],
-        name: jsonResponse['employee']['name'],
-        status: jsonResponse['employee']['status'],
-        ordersDone: jsonResponse['employee']['ordersDone'],
-        marketName: jsonResponse['employee']['marketName'],
-      );
-      print(employee);
-      currentUser!.employee = employee;
-      setState(() {
-        _loading = false;
-      });
-    } else {
-      // If the request was not successful, handle the error
-      throw Exception('Request failed with status: ${response.statusCode}');
-    }
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final jsonResponse = json.decode(response.body);
+        // Create User from Request body
+        currentUser = User(
+          email: jsonResponse['user']['email'],
+          role: jsonResponse['role'],
+        );
+        Employee employee = Employee(
+          id: jsonResponse['employee']['id'],
+          name: jsonResponse['employee']['name'],
+          status: jsonResponse['employee']['status'],
+          ordersDone: jsonResponse['employee']['ordersDone'],
+          marketName: jsonResponse['employee']['marketName'],
+        );
+        currentUser!.employee = employee;
+        setState(() {
+          _loading = false;
+        });
+      } else {
+        // If the request was not successful, handle the error
+        throw Exception('Request failed with status: ${response.statusCode}');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget? loadedWidget;
+    switch (currentUser?.employee?.status) {
+      case "Available":
+        loadedWidget = EmployeePause();
+        break;
+      case "Break":
+        loadedWidget = EmployeeResume();
+        break;
+      default:
+        loadedWidget = EmployeeCart();
+        break;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Active Assignment"),
@@ -97,24 +92,9 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
             fit: BoxFit.cover,
           ),
         ),
-        child: StreamBuilder(
-          stream: session_requests.channelBroadcastStream,
-          builder: (context, snapshot) {
-            print("heya, ich bin builder");
-            print(currentUser?.employee?.status);
-            if (snapshot.hasData) {
-              return _loading ?
-              const Center(child: CircularProgressIndicator()) : currentUser?.employee?.status == "Available" ?
-              EmployeePause(updateWidget: updateWidget) : currentUser?.employee?.status == "Break" ?
-              EmployeeResume(updateWidget: updateWidget) : EmployeeCart(updateWidget: updateWidget);
-            } else {
-              return _loading ?
-              const Center(child: CircularProgressIndicator()) : currentUser?.employee?.status == "Available" ?
-              EmployeePause(updateWidget: updateWidget) : currentUser?.employee?.status == "Break" ?
-              EmployeeResume(updateWidget: updateWidget) : EmployeeCart(updateWidget: updateWidget);
-            }
-          },
-        )
+        child: _loading
+            ? const Center(child: CircularProgressIndicator())
+            : loadedWidget
       )
     );
   }

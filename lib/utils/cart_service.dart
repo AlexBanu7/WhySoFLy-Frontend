@@ -99,6 +99,48 @@ class CartService {
     print("Removed ${cartitem.name} from cart");
   }
 
+  Future<void> removeBatchFromBackendCart(List<int> cartItemsIds) async {
+    List<int> cartItemIds = cartitems.map((cartitem) => cartitem.id).toList();
+    Map<String, dynamic> data = {
+      "cartId": backendId,
+      "cartItems": cartItemIds.map((cartItemId) => {
+        "id": cartItemId,
+      }).toList()
+    };
+
+    var response = await session_requests.post(
+      "api/Cart/RemoveItems",
+      json.encode(data),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+    }
+    else {
+      throw Exception("Failed to remove items");
+    }
+
+  }
+
+  Future<void> approveBatchFromBackendCart(List<CartItem> cartitems) async {
+    Map<String, dynamic> data = {
+      "cartId": backendId,
+      "cartItems": cartitems.map((cartitem) => {
+          "id": cartitem.id,
+        }).toList()
+    };
+
+    var response = await session_requests.post(
+      "api/Cart/ApproveItems",
+      json.encode(data),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+    }
+    else {
+      throw Exception("Failed to approve items");
+    }
+  }
+
   double calculateTotalPrice() {
     double totalPrice = 0;
     for (var cartitem in cartitems){
@@ -114,6 +156,19 @@ class CartService {
       volumeLeft -= cartitem.volume;
     }
     return volumeLeft;
+  }
+
+  Future<void> finishOrder(String finishPath) async {
+
+    var response = await session_requests.get(
+      finishPath,
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+    }
+    else {
+      throw Exception("Failed to finish order");
+    }
   }
 
   Future<void> confirmOrder() async {

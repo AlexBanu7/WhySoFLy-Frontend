@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:frontend/employee_screens/active_assignment/fetch_products_stage.dart';
 import 'package:frontend/employee_screens/active_assignment/preparing_for_approval_stage.dart';
 import 'package:frontend/employee_screens/active_assignment/waiting_on_customer_to_approve_stage.dart';
+import 'package:frontend/employee_screens/active_assignment/ack_removal_and_scan.dart';
 import 'package:frontend/main.dart';
+
 
 
 class EmployeeCart extends StatefulWidget {
 
-  final VoidCallback updateWidget;
-
-  const EmployeeCart({super.key, required this.updateWidget});
+  const EmployeeCart({super.key});
 
   @override
   State<EmployeeCart> createState() => _EmployeeCart();
@@ -21,10 +21,6 @@ class _EmployeeCart extends State<EmployeeCart>
     with SingleTickerProviderStateMixin{
 
   bool _loading = true;
-
-  void updateWidget() {
-    getCart();
-  }
 
   @override
   void initState() {
@@ -36,9 +32,7 @@ class _EmployeeCart extends State<EmployeeCart>
     setState(() {
       _loading = true;
     });
-    await Future.delayed(const Duration(seconds: 2), () async {
-      await cartService.getCart(false);
-    });
+    await cartService.getCart(false);
     setState(() {
       _loading = false;
     });
@@ -46,14 +40,30 @@ class _EmployeeCart extends State<EmployeeCart>
 
   @override
   Widget build(BuildContext context) {
+    Widget? loadedWidget;
+    switch(cartService.state) {
+      case "Gathering Items":
+        loadedWidget = FetchProductStage();
+        break;
+      case "Preparing For Approval":
+        loadedWidget = PreparingForApprovalStage();
+        break;
+      case "Pending Approval":
+        loadedWidget = WaitingOnCustomerToApproveStage();
+        break;
+      case "Removal":
+        loadedWidget = WaitingOnCustomerToApproveStage();
+        break;
+      case "Approved":
+        loadedWidget = AcknowledgeRemovalAndScan();
+        break;
+      default:
+        loadedWidget = const Text("Error");
+    }
     return
         _loading 
             ? Center(child: CircularProgressIndicator())
-            : cartService.state == "Gathering Items"
-                ? FetchProductStage(updateWidget: updateWidget, updatePage: widget.updateWidget)
-                : cartService.state == "Preparing For Approval"
-                    ? PreparingForApprovalStage(updateWidget: updateWidget)
-                    : WaitingOnCustomerToApproveStage()
+            : loadedWidget
     ;
   }
 }
