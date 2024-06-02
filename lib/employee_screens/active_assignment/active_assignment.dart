@@ -25,8 +25,9 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
   bool _loading = true;
   int counter = 0;
 
-  void updateWidget() {
-    updateInfo();
+  Future<void> updateWidget() async {
+    print("Calling updateWidget");
+    await updateInfo();
   }
 
   @override
@@ -50,6 +51,7 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
   }
 
   Future<void> updateInfo () async {
+    print("Loading...");
     setState(() {
       _loading = true;
     });
@@ -71,6 +73,7 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
         ordersDone: jsonResponse['employee']['ordersDone'],
         marketName: jsonResponse['employee']['marketName'],
       );
+      print(employee);
       currentUser!.employee = employee;
       setState(() {
         _loading = false;
@@ -98,6 +101,7 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
           stream: session_requests.channelBroadcastStream,
           builder: (context, snapshot) {
             print("heya, ich bin builder");
+            print(currentUser?.employee?.status);
             if (snapshot.hasData) {
               return _loading ?
               const Center(child: CircularProgressIndicator()) : currentUser?.employee?.status == "Available" ?

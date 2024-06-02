@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/customer_screens/cart/pending_approval_cart.dart';
+import 'package:frontend/customer_screens/cart/qr_code_cart.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/customer_screens/cart/empty_cart.dart';
 import 'package:frontend/customer_screens/cart/filled_cart.dart';
@@ -62,20 +63,22 @@ class _CartPage extends State<CartPage>
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Your Shopping Cart"),
       drawer: const CustomDrawer(),
-      body:
-      _loading
-          ? const Center(child: CircularProgressIndicator())
-          : cartService.state == "New" || cartService.state == "Gathering Items"
-            ? InProgressCart()
-            : cartService.state == "Pending Approval"
-              ? PendingApprovalCart() // NOT YET IMPLEMENTED
-              : cartService.cartitems.isNotEmpty
-                ? FilledCart(onUpdate: () {
-                    setState(() {
-                      counter++;
-                    });
-                  })
-                : const EmptyCart()
+      body: const QRCodeCart()
+      // _loading
+      //     ? const Center(child: CircularProgressIndicator())
+      //     : cartService.state == "New" || cartService.state == "Gathering Items"
+      //       ? InProgressCart()
+      //       : cartService.state == "Pending Approval"
+      //         ? PendingApprovalCart() // NOT YET IMPLEMENTED
+      //         : cartService.state == "Approved"
+      //           ?
+      //             : cartService.cartitems.isNotEmpty
+      //             ? FilledCart(onUpdate: () {
+      //                 setState(() {
+      //                   counter++;
+      //                 });
+      //               })
+      //             : const EmptyCart()
     );
   }
 }

@@ -2,8 +2,6 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 
-
-
 class EmptyCart extends StatefulWidget {
   const EmptyCart({super.key});
 
