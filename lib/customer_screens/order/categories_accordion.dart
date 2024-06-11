@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:accordion/accordion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/customer_screens/order/exandable_category.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/customer_screens/order/products_accordion.dart';
 
@@ -18,13 +19,14 @@ class CategoriesAccordion extends StatefulWidget {
   final int categoriesExpandedIndex;
   final int productsExpandedIndex;
   final void Function(int, int) updatedExpansionIndexes;
+  final int pageNumber;
 
   const CategoriesAccordion({
     super.key,
     required this.categoriesExpandedIndex,
     required this.productsExpandedIndex,
     required this.updatedExpansionIndexes,
-    required this.market
+    required this.market, required this.pageNumber
   });
 
   @override
@@ -87,49 +89,32 @@ class _CategoriesAccordion extends State<CategoriesAccordion>
 
   @override
   Widget build(BuildContext context) {
-    return _loading?
-      const Center(child: CircularProgressIndicator())
-        :
-      Accordion(
-        headerBackgroundColorOpened: Colors.transparent,
-        headerBorderWidth: 3,
-        headerBackgroundColor: Colors.transparent,
-        contentBackgroundColor: Colors.transparent,
-        contentBorderWidth: 0,
-        contentHorizontalPadding: 0,
-        scaleWhenAnimating: false,
-        openAndCloseAnimation: true,
-        paddingBetweenClosedSections: 30,
-        paddingBetweenOpenSections: 30,
-        headerPadding:
-        const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        rightIcon: Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 20),
-        children: _populate_categories_accordion()
-      );
+    return _loading
+        ? const Center(child: CircularProgressIndicator())
+        : Container(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              children: _populate_categories_column()
+            ),
+          ),
+        );
   }
-
-  List<AccordionSection> _populate_categories_accordion() {
-    List<AccordionSection> categories_to_sections = [];
+  
+  List<Widget> _populate_categories_column() {
+    List<Widget> categories_to_columns = [];
     for (var entry in categories.asMap().entries) {
       int index = entry.key;
-      Category category = entry.value;
-      categories_to_sections.add(
-        AccordionSection(
-          headerBorderColor: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-          headerBorderColorOpened: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-          isOpen: index == widget.categoriesExpandedIndex,
-          contentVerticalPadding: 0,
-          header: Text(category.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          content: ProductsAccordion(
-              market: widget.market,
-              category: category,
-              productsExpandedIndex: widget.productsExpandedIndex,
-              categoriesExpandedIndex: index,
-              updatedExpansionIndexes: widget.updatedExpansionIndexes
-          )
-        ),
-      );
+      if (index <= (widget.pageNumber + 1) * categories.length / 4 && index >= categories.length * widget.pageNumber / 4 ) {
+        Category category = entry.value;
+        categories_to_columns.add(
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: ExpandableCategory(category: category, leftSided: widget.pageNumber % 2 == 0),
+            )
+        );
+      }
     }
-    return categories_to_sections;
+    return categories_to_columns;
   }
 }

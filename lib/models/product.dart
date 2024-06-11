@@ -10,7 +10,6 @@ class Product {
   double volumePerQuantity; // volume of one item/one kilo
   double pricePerQuantity; // price for one item/one kilo
   String? image;
-  Map<String, num>? nutritionalValues;
 
   Product({
     required this.id,
@@ -22,6 +21,5 @@ class Product {
     required this.pricePerQuantity,
     this.image,
     this.description,
-    this.nutritionalValues
   });
 }

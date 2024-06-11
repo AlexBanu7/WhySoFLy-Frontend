@@ -19,7 +19,6 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
     with SingleTickerProviderStateMixin{
 
   Product? product;
-  Map<String, num> nutritionalValues = {};
 
   @override
   void initState() {
@@ -45,20 +44,8 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
         pricePerQuantity: double.tryParse(body['pricePerQuantity'].toString())?? 0.0,
         image: body['image']
       );
-      var nutritionalValuesFromBody = body["nutritionalValues"];
-      Map<String, num> fetchedNutritionalValues = {
-        "Energy": nutritionalValuesFromBody['energy'],
-        "Total Fats": nutritionalValuesFromBody['totalFats'],
-        "Saturated Fats": nutritionalValuesFromBody['saturatedFats'],
-        "Trans Fats": nutritionalValuesFromBody['transFats'],
-        "Total Carbohydrates": nutritionalValuesFromBody['totalCarbohydrates'],
-        "Fibers": nutritionalValuesFromBody['fibers'],
-        "Sugars": nutritionalValuesFromBody['sugars'],
-        "Proteins": nutritionalValuesFromBody['proteins']
-      };
       setState(() {
         product = fetchedProduct;
-        nutritionalValues = fetchedNutritionalValues;
       });
     } else {
       const snackBar = SnackBar(
@@ -67,34 +54,8 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       setState(() {
         product = null;
-        nutritionalValues = {};
       });
     }
-  }
-
-  List<Widget> _list_nutritional_values() {
-    List<Widget> nutritionalValuesWidgets = [];
-    nutritionalValues.forEach((key, value) {
-      nutritionalValuesWidgets.add(
-        Padding(
-          padding: const EdgeInsets.only(left:10, right:10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                key,
-                style: const TextStyle(fontSize: 20),
-              ),
-              Text(
-                value.toString(),
-                style: const TextStyle(fontSize: 20),
-              ),
-            ],
-          ),
-        )
-      );
-    });
-    return nutritionalValuesWidgets;
   }
 
   @override
@@ -164,14 +125,6 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
                   "${product?.description}",
                   style: TextStyle(fontSize: 20),
                 ),
-                const Text(
-                  'Nutritional Values per 100g',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-                ..._list_nutritional_values()
               ],
             ),
           ),

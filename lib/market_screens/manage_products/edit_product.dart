@@ -49,20 +49,9 @@ class _EditProductPage extends State<EditProductPage>
   num? volumePerQuantity;
   final List<String> _items = ['Item', 'Kilograms'];
   String description = '';
-  Map<String, num?> nutritionalValues = {
-    "Energy (KJ)": null,
-    "Total Fats (g)": null,
-    "Saturated Fats (g)": null,
-    "Trans Fats (g)": null,
-    "Total Carbohydrates (g)": null,
-    "Fibers (g)": null,
-    "Sugars (g)": null,
-    "Protein (g)": null,
-  };
 
   String _error = '';
   bool _loading = true; // Track loading state
-  bool _loadingNV = true; // Track loading state
 
   @override
   void dispose() {
@@ -76,22 +65,11 @@ class _EditProductPage extends State<EditProductPage>
       setState(() {
         categories = value;
         _loading = false;
-        _loadingNV = false;
         selectedCategory = value.firstWhere((element) => element.id == widget.product.categoryId).name;
         soldBy = widget.product.soldByWeight ? _items[1] : _items[0];
         pricePerQuantity = widget.product.pricePerQuantity;
         volumePerQuantity = widget.product.volumePerQuantity;
         description = widget.product.description ?? '';
-        nutritionalValues = {
-          "Energy (KJ)": widget.product.nutritionalValues?["Energy"],
-          "Total Fats (g)": widget.product.nutritionalValues?["Total Fats"],
-          "Saturated Fats (g)": widget.product.nutritionalValues?["Saturated Fats"],
-          "Trans Fats (g)": widget.product.nutritionalValues?["Trans Fats"],
-          "Total Carbohydrates (g)": widget.product.nutritionalValues?["Total Carbohydrates"],
-          "Fibers (g)": widget.product.nutritionalValues?["Fibers"],
-          "Sugars (g)": widget.product.nutritionalValues?["Sugars"],
-          "Proteins (g)": widget.product.nutritionalValues?["Proteins"],
-        };
       });
     });
   }
@@ -128,34 +106,6 @@ class _EditProductPage extends State<EditProductPage>
     }
   }
 
-  List<Widget> _nutritional_values_fields() {
-    List<Widget> nutritional_values_fields = [];
-    nutritionalValues.forEach((key, value) {
-      nutritional_values_fields.addAll([
-        TextFormField(
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(
-            labelText: key,
-          ),
-          onChanged: (value) {
-            setState(() {
-              nutritionalValues[key] = num.tryParse(value);
-            });
-          },
-          initialValue: value?.toString() ?? '',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter a number';
-            }
-            return null;
-          },
-        ),
-        const SizedBox(height: 20)
-      ]);
-    });
-    return nutritional_values_fields;
-  }
-
   void onConfirm() {
     setState(() {
       _loading = false; // Start loading
@@ -171,16 +121,6 @@ class _EditProductPage extends State<EditProductPage>
       });
       // get category id by the selected name
       num selectedCategoryId = categories.firstWhere((element) => element.name == selectedCategory).id;
-      Map<String, num?> formatterNutritionalValues = {
-        "energy": nutritionalValues["Energy (KJ)"] ?? 0,
-        "totalFats": nutritionalValues["Total Fats (g)"] ?? 0,
-        "saturatedFats": nutritionalValues["Saturated Fats (g)"] ?? 0,
-        "transFats": nutritionalValues["Trans Fats (g)"] ?? 0,
-        "totalCarbohydrates": nutritionalValues["Total Carbohydrates (g)"] ?? 0,
-        "fibers": nutritionalValues["Fibers (g)"] ?? 0,
-        "sugars": nutritionalValues["Sugars (g)"] ?? 0,
-        "proteins": nutritionalValues["Protein (g)"] ?? 0,
-      };
       var data = {
         'name': name,
         'description': description,
@@ -188,13 +128,10 @@ class _EditProductPage extends State<EditProductPage>
         "pricePerQuantity": pricePerQuantity,
         "volumePerQuantity": volumePerQuantity,
         'soldByWeight': soldBy == _items[1] ? true : false,
-        'nutritionalValues': formatterNutritionalValues,
       };
       if (image != null) {
         data['image'] = base64Encode(image!.readAsBytesSync());
       }
-      print(json.encode(data));
-      print("/api/Product/${widget.product.id}");
       session_requests.put(
         '/api/Product/${widget.product.id}',
         json.encode(data),
@@ -262,7 +199,7 @@ class _EditProductPage extends State<EditProductPage>
                             },
                             blendMode: BlendMode.dstOut,
                             child: SingleChildScrollView(
-                              child: _loadingNV ? const CircularProgressIndicator() :
+                              child:
                               Form(
                                 key: _formKey,
                                 child: Column(
@@ -396,16 +333,6 @@ class _EditProductPage extends State<EditProductPage>
                                       },
                                     ),
                                     const SizedBox(height: 20),
-                                    const Text(
-                                      "Nutritional Values per 100g",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    ..._nutritional_values_fields(),
-                                    SizedBox(height: 20),
                                     _loading
                                         ? const CircularProgressIndicator() // Show circular progress indicator if loading
                                         : ElevatedButton(

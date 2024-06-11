@@ -14,18 +14,10 @@ import 'package:frontend/models/product.dart';
 class ProductsAccordion extends StatefulWidget {
 
   final Category category;
-  final int productsExpandedIndex;
-  final int categoriesExpandedIndex;
-  final void Function(int, int) updatedExpansionIndexes;
-  final Market? market;
 
   const ProductsAccordion({
     super.key,
     required this.category,
-    required this.categoriesExpandedIndex,
-    required this.productsExpandedIndex,
-    required this.updatedExpansionIndexes,
-    required this.market
   });
 
   @override
@@ -34,6 +26,8 @@ class ProductsAccordion extends StatefulWidget {
 
 class _ProductsAccordion extends State<ProductsAccordion>
     with SingleTickerProviderStateMixin{
+
+  int expandedIndex = -1;
 
   @override
   void initState() {
@@ -68,12 +62,9 @@ class _ProductsAccordion extends State<ProductsAccordion>
     for (var entry in (category.products).asMap().entries) {
       int index = entry.key;
       Product product = entry.value;
-      if (product.marketId != widget.market?.id) {
-        continue;
-      }
       products_to_sections.add(
         AccordionSection(
-          isOpen: widget.productsExpandedIndex == index,
+          isOpen: expandedIndex == index,
           header: Text(product.name),
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +81,6 @@ class _ProductsAccordion extends State<ProductsAccordion>
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      widget.updatedExpansionIndexes(widget.categoriesExpandedIndex, index);
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -125,7 +115,6 @@ class _ProductsAccordion extends State<ProductsAccordion>
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      widget.updatedExpansionIndexes(widget.categoriesExpandedIndex, index);
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {

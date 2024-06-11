@@ -21,6 +21,7 @@ import 'package:frontend/models/user.dart';
 import 'package:uuid/uuid.dart';
 
 import 'admin_screens/manage_markets/manage_markets.dart';
+import 'customer_screens/order/category_order.dart';
 import 'employee_screens/active_assignment/active_assignment.dart';
 import 'employee_screens/review_orders/review_orders.dart';
 
@@ -79,6 +80,7 @@ class _MyAppState extends State<MyApp> {
         '/manage_employees': (context) => const ManageEmployeesPage(),
         '/manage_products': (context) => const ManageProductsPage(),
         '/edit-product': (context) => EditProductPage(arguments: ModalRoute.of(context)?.settings.arguments),
+        '/category-order': (context) => CategoryOrderPage(arguments: ModalRoute.of(context)?.settings.arguments),
         '/active_assignment': (context) => const ActiveAssignmentPage(),
         '/review_orders': (context) => const ReviewOrdersPage(),
         '/manage_markets': (context) => const ManageMarketsPage(),

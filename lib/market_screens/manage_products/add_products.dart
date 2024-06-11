@@ -29,16 +29,6 @@ class _AddProductsTab extends State<AddProductsTab>
   num? volumePerQuantity;
   final List<String> _items = ['Item', 'Kilograms'];
   String description = '';
-  Map<String, num?> nutritionalValues = {
-    "Energy (KJ)": null,
-    "Total Fats (g)": null,
-    "Saturated Fats (g)": null,
-    "Trans Fats (g)": null,
-    "Total Carbohydrates (g)": null,
-    "Fibers (g)": null,
-    "Sugars (g)": null,
-    "Protein (g)": null,
-  };
 
   String _error = '';
   bool _loading = false; // Track loading state
@@ -91,33 +81,6 @@ class _AddProductsTab extends State<AddProductsTab>
     }
   }
 
-  List<Widget> _nutritional_values_fields() {
-    List<Widget> nutritional_values_fields = [];
-    nutritionalValues.forEach((key, value) {
-      nutritional_values_fields.addAll([
-        TextFormField(
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(
-            labelText: key,
-          ),
-          onChanged: (value) {
-            setState(() {
-              nutritionalValues[key] = num.tryParse(value);
-            });
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter a number';
-            }
-            return null;
-          },
-        ),
-        const SizedBox(height: 20)
-      ]);
-    });
-    return nutritional_values_fields;
-  }
-
   void onConfirm() {
     setState(() {
       _loading = false; // Start loading
@@ -133,16 +96,6 @@ class _AddProductsTab extends State<AddProductsTab>
       });
       // get category id by the selected name
       num selectedCategoryId = categories.firstWhere((element) => element.name == selectedCategory).id;
-      Map<String, num?> formatterNutritionalValues = {
-        "energy": nutritionalValues["Energy (KJ)"] ?? 0,
-        "totalFats": nutritionalValues["Total Fats (g)"] ?? 0,
-        "saturatedFats": nutritionalValues["Saturated Fats (g)"] ?? 0,
-        "transFats": nutritionalValues["Trans Fats (g)"] ?? 0,
-        "totalCarbohydrates": nutritionalValues["Total Carbohydrates (g)"] ?? 0,
-        "fibers": nutritionalValues["Fibers (g)"] ?? 0,
-        "sugars": nutritionalValues["Sugars (g)"] ?? 0,
-        "proteins": nutritionalValues["Protein (g)"] ?? 0,
-      };
       var data = {
         'name': name,
         'description': description,
@@ -152,7 +105,6 @@ class _AddProductsTab extends State<AddProductsTab>
         'soldByWeight': soldBy == _items[1] ? true : false,
         'image': image != null ? base64Encode(image!.readAsBytesSync()) : null,
         "marketId": currentUser?.market?.id,
-        'nutritionalValues': formatterNutritionalValues,
       };
       session_requests.post(
         '/api/Product',
@@ -347,16 +299,6 @@ class _AddProductsTab extends State<AddProductsTab>
                                   },
                                 ),
                                 const SizedBox(height: 20),
-                                const Text(
-                                  "Nutritional Values per 100g",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                ..._nutritional_values_fields(),
-                                SizedBox(height: 20),
                                 _loading
                                     ? const CircularProgressIndicator() // Show circular progress indicator if loading
                                     : ElevatedButton(
