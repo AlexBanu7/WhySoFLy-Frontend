@@ -161,13 +161,27 @@ class _CustomDrawer extends State<CustomDrawer>
       ListTile(
         title: const Text('Manage Employees'),
         onTap: () {
-          Navigator.pushNamed(context, "/manage_employees");
+          if (currentUser?.market != null && currentUser?.market?.verified == false) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Page locked while account verification is in progress.'))
+            );
+          } else {
+            Navigator.pushNamed(context, "/manage_employees");
+          }
         },
       ),
       ListTile(
         title: const Text('Manage Products'),
         onTap: () {
-          Navigator.pushNamed(context, "/manage_products");
+          if (currentUser?.market != null && currentUser?.market?.verified == false) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Page locked while account verification is in progress.'))
+            );
+          } else {
+            Navigator.pushNamed(context, "/manage_products");
+          }
         },
       ),
       ListTile(

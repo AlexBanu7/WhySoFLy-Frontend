@@ -33,7 +33,6 @@ class _CartPage extends State<CartPage>
   }
 
   Future<void> getCart() async {
-    print("Getting cart");
     setState(() {
       _loading = true;
     });
@@ -87,7 +86,11 @@ class _CartPage extends State<CartPage>
     }
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: CustomAppBar("Your Shopping Cart"),
+      appBar: CustomAppBar(
+        cartService.employeeName != null
+            ? "Assigned to ${cartService.employeeName}"
+            : "Your Shopping Cart",
+      ),
       drawer: const CustomDrawer(),
       body:
       _loading

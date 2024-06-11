@@ -16,6 +16,7 @@ class CartService {
   int? backendId;
   String? state;
   int? employeeId;
+  String? employeeName;
 
   void clearCart() {
     // TODO: Use when an order has been completed
@@ -25,6 +26,7 @@ class CartService {
     backendId = null;
     state = null;
     employeeId = null;
+    employeeName = null;
   }
 
   void addToCart(Product product, num quantity) {
@@ -216,8 +218,6 @@ class CartService {
       );
     }
 
-    print(response.statusCode);
-
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print("Got cart");
       var body = json.decode(response.body);
@@ -226,6 +226,7 @@ class CartService {
       state = body['state'];
       employeeId = body['employeeId'];
       marketId = body['marketId'];
+      employeeName = body['employeeName'];
       List<CartItem> fetchedCartItems = [];
       for (var cartitem in body['cartItems']) {
         CartItem fetchedCartItem = CartItem(

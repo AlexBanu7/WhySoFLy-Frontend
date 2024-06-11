@@ -52,14 +52,28 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       // Parse the JSON response body into a Dart object
-      const snackBar = SnackBar(
-        content: Text('Market Registered! An admin will review your request.'),
+      var response = await session_requests.post(
+        '/identity/assignRole',
+        json.encode({
+          'email': currentUser?.email??"",
+          'role': 'Manager'
+        }),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      setState(() {
-        _loading = false; // Stop loading
-        _error = ''; // Clear previous error
-      });
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        const snackBar = SnackBar(
+          content: Text(
+              'Market Registered! An admin will review your request.'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        setState(() {
+          _loading = false; // Stop loading
+          _error = ''; // Clear previous error
+        });
+      }
+      else {
+        // If the request was not successful, handle the error
+        throw Exception('Request failed with status: ${response.statusCode}');
+      }
     } else {
       // If the request was not successful, handle the error
       throw Exception('Request failed with status: ${response.statusCode}');
