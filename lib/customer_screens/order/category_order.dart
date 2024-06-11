@@ -22,9 +22,8 @@ class CategoryOrderPage extends StatefulWidget {
   late Market market;
 
   CategoryOrderPage({super.key, arguments}){
-    if (arguments is List){
-      category = arguments[0];
-      market = arguments[1];
+    if (arguments is Category){
+      category = arguments;
     } else {
       category = Category(id: -1, name: "Unknown", products: []);
     }

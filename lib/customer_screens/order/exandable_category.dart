@@ -38,7 +38,7 @@ class _ExpandableElementState extends State<ExpandableCategory> {
             child: GestureDetector(
               onTap: () {
                 if(_isExpanded){
-                  Navigator.pushNamed(context, "/category-order", arguments: Category);
+                  Navigator.pushNamed(context, "/category-order", arguments: widget.category);
                 }
               },
               child: Container(
