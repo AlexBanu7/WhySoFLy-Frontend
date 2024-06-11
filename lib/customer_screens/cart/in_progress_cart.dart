@@ -10,7 +10,10 @@ import 'package:frontend/widgets/linear_progress_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class InProgressCart extends StatefulWidget {
-  const InProgressCart({super.key});
+
+  final bool withAddMore;
+
+  const InProgressCart({super.key, required this.withAddMore});
 
   @override
   State<InProgressCart> createState() => _InProgressCart();
@@ -107,18 +110,32 @@ class _InProgressCart extends State<InProgressCart>
                 )
               ),
               const Spacer(),
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text(
-                  'At this stage, more products can be added. Order Time will increase. They cannot be verified by photography.',
-                  style: TextStyle(fontSize: 12.0),
-                  textAlign: TextAlign.center,
+              if (widget.withAddMore)
+                Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        'At this stage, more products can be added. Order Time will increase. They cannot be verified by photography.',
+                        style: TextStyle(fontSize: 12.0),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _navigate_to_order_page,
+                      child: const Text('Add more Items'),
+                    ),
+                  ],
+                )
+              else
+                const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    'No more products can be added.',
+                    style: TextStyle(fontSize: 12.0),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: _navigate_to_order_page,
-                child: const Text('Add more Items'),
-              ),
               const SizedBox(height:40)
             ]
         )

@@ -46,16 +46,17 @@ class _CartPage extends State<CartPage>
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     Widget? loadedWidget;
     switch(cartService.state) {
       case "Gathering Items":
-        loadedWidget = InProgressCart();
+        loadedWidget = InProgressCart(withAddMore: true);
         break;
       case "New":
-        loadedWidget = InProgressCart();
+        loadedWidget = InProgressCart(withAddMore: true);
         break;
       case "Preparing For Approval":
-        loadedWidget = InProgressCart();
+        loadedWidget = InProgressCart(withAddMore: false);
         break;
       case "Pending Approval":
         loadedWidget = PendingApprovalCart();

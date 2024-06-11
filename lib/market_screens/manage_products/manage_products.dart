@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import 'package:frontend/market_screens/manage_products/add_products.dart';
 import 'package:frontend/market_screens/manage_products/products_in_sale.dart';
 import '../../widgets/custom_appbar.dart';
@@ -36,6 +37,7 @@ class _ManageProductsPage extends State<ManageProductsPage>
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
       appBar: CustomAppBar("Products"),
       drawer: const CustomDrawer(),

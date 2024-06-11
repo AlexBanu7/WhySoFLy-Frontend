@@ -60,6 +60,20 @@ class _CustomDrawer extends State<CustomDrawer>
         ),
       ]);
     }
+    List<Widget> adminSections = [
+      ListTile(
+        title: const Text('Home'),
+        onTap: () {
+          Navigator.pushNamed(context, "/");
+        },
+      ),
+      ListTile(
+        title: const Text('Manage Markets'),
+        onTap: () {
+          Navigator.pushNamed(context, "/manage_markets");
+        },
+      ),
+    ];
     List<Widget> customerSections = [
       ListTile(
         title: const Text('Home'),
@@ -213,11 +227,14 @@ class _CustomDrawer extends State<CustomDrawer>
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: currentUser != null ?
+                    currentUser?.role == "ADMIN"
+                ? Colors.black
+                        :
                 currentUser?.market != null ?
                 Colors.orange :
                     currentUser?.employee != null ?
                         Colors.green
-                    
+
                     : Colors.lightBlueAccent
                         : Colors.black12,
               ),
@@ -227,7 +244,11 @@ class _CustomDrawer extends State<CustomDrawer>
               ),
             ),
           ),
-          if (currentUser == null || (currentUser?.market == null && currentUser?.employee == null))
+          if (currentUser == null)
+            ...customerSections,
+          if (currentUser?.role == "ADMIN")
+            ...adminSections,
+          if (currentUser?.market == null && currentUser?.employee == null && currentUser?.role != "ADMIN")
             ...customerSections,
           if (currentUser?.market != null)
             ...managerSections,

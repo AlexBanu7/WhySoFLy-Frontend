@@ -6,6 +6,18 @@ class Market {
   LatLng location;
   String? inviteKey;
   bool? verified;
+  String? email;
+  String? weekendHours;
+  String? weekdayHours;
 
-  Market({required this.id, required this.name, required this.location, this.inviteKey, this.verified});
+  Market({
+    required this.id,
+    required this.name,
+    required this.location,
+    this.inviteKey,
+    this.verified,
+    this.email,
+    this.weekendHours,
+    this.weekdayHours,
+  });
 }

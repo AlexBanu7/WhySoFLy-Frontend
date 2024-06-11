@@ -141,7 +141,7 @@ class _PendingApprovalCart extends State<PendingApprovalCart>
                       }
                       cartService.approveBatchFromBackendCart(approvedItems)
                         .then((value) {
-                          session_requests.sendMessage("Submitted Review");
+                          session_requests.sendMessage("Submitted Review", context: context);
                           nav.refreshAndPushNamed(context, ['/cart']);
                         });
                     },

@@ -25,7 +25,7 @@ class _EmployeeCardDialog extends State<EmployeeCardDialog>
     };
 
     var response = await session_requests.post(
-      '/api/Market/rejectRequest',
+      '/api/Employee/rejectRequest',
       json.encode(data),
     );
 

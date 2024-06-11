@@ -80,7 +80,7 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
         loadedWidget = EmployeeCart();
         break;
     }
-
+    session_requests.setContext(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Active Assignment"),

@@ -124,7 +124,7 @@ class _RemovalCart extends State<RemovalCart>
                     onPressed: () {
                       cartService.removeBatchFromBackendCart(removedCartItemsIds)
                           .then((value) {
-                            session_requests.sendMessage("Confirm Cart");
+                            session_requests.sendMessage("Confirm Cart", context: context);
                             nav.refreshAndPushNamed(context, ['/cart']);
                           });
                     },

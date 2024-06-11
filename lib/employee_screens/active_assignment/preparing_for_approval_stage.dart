@@ -137,7 +137,7 @@ class _PreparingForApprovalStage extends State<PreparingForApprovalStage>
                             return;
                           }
                           cartService.patchCartItemsPhotos(photos);
-                          session_requests.sendMessage("Attached Photos");
+                          session_requests.sendMessage("Attached Photos", context: context);
                           nav.refreshAndPushNamed(context, ['/active_assignment']);
                         },
                         child: const Text('Next Step'),

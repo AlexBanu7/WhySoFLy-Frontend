@@ -32,7 +32,10 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
             : 150.0 + (_controller.value * 50); // Adjust target size as needed
         return GestureDetector(
           onTap: () {
-            if (currentUser?.market != null) {
+            if(currentUser?.role == "ADMIN") {
+              Navigator.pushNamed(context, "/manage_markets");
+            }
+            else if (currentUser?.market != null) {
               nav.refreshAndPushNamed(context, ["/manage_employees"]);
             }
             else if (currentUser?.employee != null) {
@@ -44,7 +47,11 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: currentUser?.market != null
+            children: currentUser?.role == "ADMIN"
+            ? [Icon(
+              Icons.settings,
+              size: size)]
+            : currentUser?.market != null
             ? [
               Image.asset(
                 'assets/images/manager-plane.png',

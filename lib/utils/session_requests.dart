@@ -17,7 +17,11 @@ class Session {
   static String ws_url = 'ws://' + ip + '/ws';
 
   WebSocketChannel? channel;
-  Stream? channelBroadcastStream;
+  BuildContext? _context;
+
+  void setContext(BuildContext context) {
+    _context = context;
+  }
 
   Future<http.Response> get(String path) async {
     http.Response response = await http.get(Uri.parse(base_url+path), headers: headers);
@@ -43,7 +47,7 @@ class Session {
     return response;
   }
 
-  void setUpChannel(BuildContext context, String redirectOnReceive) {
+  void setUpChannel(String redirectOnReceive) {
     WebSocketChannel _channel = WebSocketChannel.connect(
       Uri.parse(ws_url),
     );
@@ -60,13 +64,15 @@ class Session {
           },
         ),
       );
-      nav.refreshAndPushNamed(context, [redirectOnReceive]);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      nav.refreshAndPushNamed(_context!, [redirectOnReceive]);
+      ScaffoldMessenger.of(_context!).showSnackBar(snackBar);
+
     });
     _channel.sink.add(currentUser?.email??"");
   }
 
-  void sendMessage(String message) {
+  void sendMessage(String message, {BuildContext? context}) {
+    _context = context;
     print("Sending message: $message");
     channel?.sink.add(json.encode({
         "command": message

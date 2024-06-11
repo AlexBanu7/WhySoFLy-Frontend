@@ -38,34 +38,29 @@ class CartService {
     }
     // Add to cart
     // If cart has a backendId, add in backend instead
-    print(backendId);
-    if (backendId != null) {
-      print("Adding to backend cart");
-      addToBackendCart(product, quantity);
+    print("Adding to local cart");
+    if (!cartitems.any((cartitem) => cartitem.productId == product.id)) {
+      CartItem cartItem = CartItem(
+          id:Random().nextInt(9999),
+          productId: product.id,
+          name: product.name,
+          quantity: quantity,
+          volume: quantity * product.volumePerQuantity,
+          price: quantity * product.pricePerQuantity,
+          accepted: false
+      );
+      cartitems.add(cartItem);
     } else {
-      print("Adding to local cart");
-      if (!cartitems.any((cartitem) => cartitem.productId == product.id)) {
-        CartItem cartItem = CartItem(
-            id:Random().nextInt(9999),
-            productId: product.id,
-            name: product.name,
-            quantity: quantity,
-            volume: quantity * product.volumePerQuantity,
-            price: quantity * product.pricePerQuantity,
-            accepted: false
-        );
-        cartitems.add(cartItem);
-      } else {
-        int existingIndex = cartitems.indexWhere((cartitem) => cartitem.productId == product.id);
-        CartItem cartItemToModify = cartitems[existingIndex];
-        cartItemToModify.quantity += quantity;
-        cartItemToModify.volume += quantity * product.volumePerQuantity;
-        cartItemToModify.price += quantity * product.pricePerQuantity;
-      }
+      int existingIndex = cartitems.indexWhere((cartitem) => cartitem.productId == product.id);
+      CartItem cartItemToModify = cartitems[existingIndex];
+      cartItemToModify.quantity += quantity;
+      cartItemToModify.volume += quantity * product.volumePerQuantity;
+      cartItemToModify.price += quantity * product.pricePerQuantity;
     }
   }
 
   Future<void> addToBackendCart(Product product, num quantity) async {
+    print("Adding to backend cart");
     Map<String, dynamic> data = {
       "name": product.name,
       "productId": product.id,
@@ -82,7 +77,6 @@ class CartService {
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      session_requests.sendMessage("Add To Cart");
     }
     else {
       throw Exception("Failed to add to cart");
@@ -100,16 +94,15 @@ class CartService {
   }
 
   Future<void> removeBatchFromBackendCart(List<int> cartItemsIds) async {
-    List<int> cartItemIds = cartitems.map((cartitem) => cartitem.id).toList();
     Map<String, dynamic> data = {
       "cartId": backendId,
-      "cartItems": cartItemIds.map((cartItemId) => {
+      "cartItems": cartItemsIds.map((cartItemId) => {
         "id": cartItemId,
       }).toList()
     };
 
     var response = await session_requests.post(
-      "api/Cart/RemoveItems",
+      "/api/Cart/RemoveItems",
       json.encode(data),
     );
 
@@ -130,7 +123,7 @@ class CartService {
     };
 
     var response = await session_requests.post(
-      "api/Cart/ApproveItems",
+      "/api/Cart/ApproveItems",
       json.encode(data),
     );
 
@@ -198,12 +191,20 @@ class CartService {
     }
   }
 
-  Future<void> getCart(bool forCustomer) async {
+  Future<void> getCart(bool forCustomer, {bool removedOnly = false}) async {
     if (currentUser == null) {
       return;
     }
+    if (backendId != null) {
+      clearCart();
+    }
     Response response;
-    if (forCustomer){
+    if (removedOnly){
+      response = await session_requests.post(
+          '/api/Cart/CartWithRemovedOnly',
+          json.encode(currentUser?.employee?.id)
+      );
+    } else if (forCustomer){
       response = await session_requests.post(
           '/api/Cart/ByCustomerEmail',
           json.encode(currentUser?.email)
@@ -219,7 +220,6 @@ class CartService {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       print("Got cart");
-      clearCart();
       var body = json.decode(response.body);
       print(body);
       backendId = body['id'];

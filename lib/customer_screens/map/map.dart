@@ -40,6 +40,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Map"),

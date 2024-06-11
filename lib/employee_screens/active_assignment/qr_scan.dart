@@ -74,8 +74,9 @@ class _QRScan extends State<QRScan>
                                   builder: (BuildContext context) {
                                     return ConfirmationDialog(
                                         onConfirm: () {
+                                          session_requests.sendMessage("Finish Order", context: context);
                                           cartService.finishOrder(scannedData!);
-                                          session_requests.sendMessage("Finish Order");
+                                          nav.refreshAndPushNamed(context, []);
                                         },
                                         title: "Confirm order completion?"
                                     );

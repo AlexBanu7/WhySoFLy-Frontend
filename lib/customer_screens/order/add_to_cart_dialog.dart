@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/main.dart';
 import 'package:frontend/models/product.dart';
-import 'package:frontend/models/user.dart';
 
 class AddToCartDialog extends StatefulWidget {
 
@@ -76,8 +74,18 @@ class _AddToCartDialog extends State<AddToCartDialog>
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                print("Here I am");
                 if (_formKey.currentState!.validate()) {
-                  cartService.addToCart(widget.product, selectedQuantity);
+                  if (cartService.backendId != null){
+                    print("Adding to backend cart");
+                    cartService.addToBackendCart(widget.product, selectedQuantity)
+                      .then((value) {
+                        session_requests.sendMessage("Add To Cart", context: context);
+                      });
+                  } else {
+                    print("Adding to normal cart");
+                    cartService.addToCart(widget.product, selectedQuantity);
+                  }
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Product has been successfully added!')),

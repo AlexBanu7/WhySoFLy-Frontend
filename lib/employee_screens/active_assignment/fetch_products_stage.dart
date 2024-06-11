@@ -98,7 +98,7 @@ class _FetchProductStage extends State<FetchProductStage>
                                 .showSnackBar(SnackBar(content: Text('Please gather all items')));
                             return;
                           }
-                          session_requests.sendMessage("Fetched Products");
+                          session_requests.sendMessage("Fetched Products", context: context);
                           nav.refreshAndPushNamed(context, ["/active_assignment"]);
                         },
                         child: const Text('Next Step'),

@@ -21,6 +21,7 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:frontend/models/user.dart';
 import 'package:uuid/uuid.dart';
 
+import 'admin_screens/manage_markets/manage_markets.dart';
 import 'employee_screens/active_assignment/active_assignment.dart';
 import 'employee_screens/review_orders/review_orders.dart';
 
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
         '/edit-product': (context) => EditProductPage(arguments: ModalRoute.of(context)?.settings.arguments),
         '/active_assignment': (context) => const ActiveAssignmentPage(),
         '/review_orders': (context) => const ReviewOrdersPage(),
+        '/manage_markets': (context) => const ManageMarketsPage(),
       },
     );
   }

@@ -83,6 +83,7 @@ class _RegisterMarketPage extends State<RegisterMarketPage>
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar("Let's set up shop!"),

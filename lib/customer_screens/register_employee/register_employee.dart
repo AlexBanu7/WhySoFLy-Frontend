@@ -114,6 +114,7 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar("Join the team virtually!"),

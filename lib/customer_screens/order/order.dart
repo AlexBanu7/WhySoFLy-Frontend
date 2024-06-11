@@ -51,6 +51,7 @@ class _OrderPage extends State<OrderPage>
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Ordering at ${widget.market.name}"),

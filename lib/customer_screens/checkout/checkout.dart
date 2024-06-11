@@ -64,6 +64,7 @@ class _CheckoutPage extends State<CheckoutPage>
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -136,7 +137,7 @@ class _CheckoutPage extends State<CheckoutPage>
                         onPressed: () {
                           // Confirm order
                           cartService.confirmOrder().then((void value) {
-                            session_requests.sendMessage("Checkout Customer");
+                            session_requests.sendMessage("Checkout Customer", context: context);
                           });
                           setState(() {
                             _loading = true;

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:frontend/main.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
 
@@ -14,6 +15,7 @@ class _HowToScreen extends State<HowToScreen> {
 
   @override
   Widget build(BuildContext context) {
+    session_requests.setContext(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("How To"),

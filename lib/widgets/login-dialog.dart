@@ -90,7 +90,7 @@ class _LoginDialog extends State<LoginDialog>
         } else {
           redirectOnReceive = "/cart";
         }
-        session_requests.setUpChannel(context, redirectOnReceive);
+        session_requests.setUpChannel(redirectOnReceive);
         // Clear error message
         setState(() {
           error = '';
