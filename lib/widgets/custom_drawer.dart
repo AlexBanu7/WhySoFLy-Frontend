@@ -248,7 +248,7 @@ class _CustomDrawer extends State<CustomDrawer>
             ...customerSections,
           if (currentUser?.role == "ADMIN")
             ...adminSections,
-          if (currentUser?.market == null && currentUser?.employee == null && currentUser?.role != "ADMIN")
+          if (currentUser != null && currentUser?.market == null && currentUser?.employee == null && currentUser?.role != "ADMIN")
             ...customerSections,
           if (currentUser?.market != null)
             ...managerSections,

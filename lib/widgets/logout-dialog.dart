@@ -30,10 +30,6 @@ class _LogoutDialog extends State<LogoutDialog>
       currentUser = null;
       cartService.clearCart();
       session_requests.closeChannel();
-      const snackBar = SnackBar(
-        content: Text('See you soon!'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       widget.onUpdate();
       Navigator.pushNamed(context, "/");
     } else {

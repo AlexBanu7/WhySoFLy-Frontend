@@ -20,14 +20,10 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? controller;
 
-  AndroidMapRenderer? _initializedRenderer;
+  bool _loading = true;
 
   @override
   void initState() {
-    initializeMapRenderer()
-        .then<void>((AndroidMapRenderer? initializedRenderer) => setState(() {
-      _initializedRenderer = initializedRenderer;
-    }));
     super.initState();
   }
 
@@ -45,15 +41,22 @@ class _MapScreenState extends State<MapScreen> {
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar("Map"),
       drawer: const CustomDrawer(),
-      body: GoogleMap(
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _populate_markers();
-          _onMapCreated(controller);
-        },
-        cloudMapId: 'bab3d6c7b6649b31',
-        markers: _markers, // Call _addMarker when user taps on the map
-      ),
+      body:
+      Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _populate_markers();
+              _onMapCreated(controller);
+            },
+            markers: _markers, // Call _addMarker when user taps on the map
+            cloudMapId: 'bab3d6c7b6649b31',
+          ),
+          if (_loading)
+            Center(child: CircularProgressIndicator()),
+        ],
+      )
     );
   }
 
@@ -74,13 +77,14 @@ class _MapScreenState extends State<MapScreen> {
               markerId: MarkerId(market.location.toString()),
               position: market.location,
               infoWindow: InfoWindow(
-                  title: 'Order at ${market.name}',
+                  title: 'Click to order at ${market.name}',
                   onTap: () {
                     cartService.marketId = market.id;
                     Navigator.pushNamed(context, '/order', arguments: market);
                   }
               ),
-              icon: BitmapDescriptor.defaultMarker,
+              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+
             )
         );
       }
@@ -98,6 +102,7 @@ class _MapScreenState extends State<MapScreen> {
   void _onMapCreated(GoogleMapController controllerParam) {
     setState(() {
       controller = controllerParam;
+      _loading = false;
     });
   }
 }
