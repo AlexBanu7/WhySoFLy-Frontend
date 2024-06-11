@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/widgets/confirmation_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -28,6 +29,11 @@ class _LogoutDialog extends State<LogoutDialog>
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       currentUser = null;
+      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+      themeProvider.setTheme(ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ));
       cartService.clearCart();
       session_requests.closeChannel();
       widget.onUpdate();

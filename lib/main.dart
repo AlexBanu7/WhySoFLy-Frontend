@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:frontend/customer_screens/cart/cart.dart';
 import 'package:frontend/customer_screens/checkout/checkout.dart';
 import 'package:frontend/customer_screens/home/home.dart';
@@ -23,9 +24,27 @@ import 'admin_screens/manage_markets/manage_markets.dart';
 import 'employee_screens/active_assignment/active_assignment.dart';
 import 'employee_screens/review_orders/review_orders.dart';
 
+class ThemeProvider extends ChangeNotifier {
+  ThemeData _themeData;
+
+  ThemeProvider(this._themeData);
+
+  getTheme() => _themeData;
+  setTheme(ThemeData theme) {
+    _themeData = theme;
+    notifyListeners();
+  }
+}
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      useMaterial3: true,
+    ),),
+    child: MyApp(),
+  ));
 }
 
 User? currentUser;
@@ -34,17 +53,20 @@ Session session_requests = Session();
 Navigation nav = Navigation();
 Uuid uuid = Uuid();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+  
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: themeProvider.getTheme(),
       routes: {
         '/': (context) => const MyHomePage(),
         '/map': (context) => const MapScreen(),

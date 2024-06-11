@@ -5,7 +5,7 @@ import 'package:frontend/models/market.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/widgets/singup-dialog.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -67,6 +67,11 @@ class _LoginDialog extends State<LoginDialog>
             marketName: jsonResponse['employee']['marketName'],
           );
           currentUser!.employee = employee;
+          final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+          themeProvider.setTheme(ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+            useMaterial3: true,
+          ));
         }
         if (jsonResponse["market"] != null) {
           Market market = Market(
@@ -80,6 +85,11 @@ class _LoginDialog extends State<LoginDialog>
             verified: jsonResponse['market']['verified'],
           );
           currentUser!.market = market;
+          final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+          themeProvider.setTheme(ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+            useMaterial3: true,
+          ));
         }
         // Start WebSocket
         String redirectOnReceive;
