@@ -147,9 +147,12 @@ class CartService {
   double computeVolumeLeft() {
     // TODO: Get from API
     double volumeLeft = volume;
+    print("Initial volume left: $volumeLeft");
     for (var cartitem in cartitems){
+      print("This cartitem has volume: ${cartitem.volume}");
       volumeLeft -= cartitem.volume;
     }
+    print("Computed volume left: $volumeLeft");
     return volumeLeft;
   }
 

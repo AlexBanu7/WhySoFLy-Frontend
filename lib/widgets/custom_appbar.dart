@@ -42,9 +42,6 @@ class _CustomAppBar extends State<CustomAppBar>
             builder: (BuildContext context) {
               return LogoutDialog(
                 onUpdate: () {
-                  setState(() {
-                    _counter++;
-                  });
                 },
               );
             },

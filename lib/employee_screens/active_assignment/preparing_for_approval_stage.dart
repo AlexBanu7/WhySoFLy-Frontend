@@ -136,8 +136,9 @@ class _PreparingForApprovalStage extends State<PreparingForApprovalStage>
                                 .showSnackBar(SnackBar(content: Text('Please photograph all items')));
                             return;
                           }
-                          cartService.patchCartItemsPhotos(photos);
-                          session_requests.sendMessage("Attached Photos", context: context);
+                          cartService.patchCartItemsPhotos(photos).then((value) {
+                            session_requests.sendMessage("Attached Photos", context: context);
+                          });
                           nav.refreshAndPushNamed(context, ['/active_assignment']);
                         },
                         child: const Text('Next Step'),

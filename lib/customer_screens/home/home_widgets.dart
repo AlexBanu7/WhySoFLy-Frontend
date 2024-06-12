@@ -39,7 +39,7 @@ class _AnimatedSizeImageState extends State<AnimatedSizeImage>
               nav.refreshAndPushNamed(context, ["/manage_employees"]);
             }
             else if (currentUser?.employee != null) {
-              nav.refreshAndPushNamed(context, ["/review_orders"]);
+              nav.refreshAndPushNamed(context, ["/active_assignment"]);
             }
             else {
               nav.refreshAndPushNamed(context, ["/map"]);

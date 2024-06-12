@@ -84,12 +84,18 @@ class _AddToCartDialog extends State<AddToCartDialog>
                       });
                   } else {
                     print("Adding to normal cart");
-                    cartService.addToCart(widget.product, selectedQuantity);
+                    try {
+                      cartService.addToCart(widget.product, selectedQuantity);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Product has been successfully added!')),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
                   }
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Product has been successfully added!')),
-                  );
                 }
               },
               child: Text('Add'),

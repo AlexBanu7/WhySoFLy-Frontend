@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/utils/utils.dart';
 
 
 class OrderDetailsDialog extends StatefulWidget {
@@ -62,7 +63,7 @@ class _OrderDetailsDialog extends State<OrderDetailsDialog>
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                "Submission Date: ${widget.cart["submissionDate"]}",
+                "Submission Date: ${ISOtoReadable(widget.cart["submissionDate"])}",
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     fontSize: 20

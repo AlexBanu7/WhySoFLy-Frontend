@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:frontend/customer_screens/past_orders/order_details_dialog.dart';
 import 'package:frontend/main.dart';
+import 'package:frontend/utils/utils.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_drawer.dart';
 
@@ -75,7 +76,7 @@ class _PastOrdersPage extends State<PastOrdersPage> {
                     child: Card(
                       child: ListTile(
                         title: Text(cart['marketName']),
-                        subtitle: Text(cart['submissionDate']),
+                        subtitle: Text(ISOtoReadable(cart['submissionDate'])),
                       ),
                     ),
                   )
