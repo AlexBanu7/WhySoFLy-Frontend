@@ -32,7 +32,7 @@ class _CustomDrawer extends State<CustomDrawer>
           color: Colors.white,
         ),
         Text(
-          currentUser!.email,
+          currentUser!.userName,
           style: const TextStyle(
               fontSize: 20,
               color: Colors.white
@@ -101,9 +101,9 @@ class _CustomDrawer extends State<CustomDrawer>
         },
       ),
       ListTile(
-        title: const Text('How to'),
+        title: const Text('Past Orders'),
         onTap: () {
-          Navigator.pushNamed(context, "/howto");
+          Navigator.pushNamed(context, "/past_orders");
         },
       ),
       ListTile(
@@ -184,12 +184,6 @@ class _CustomDrawer extends State<CustomDrawer>
           }
         },
       ),
-      ListTile(
-        title: const Text('How to'),
-        onTap: () {
-          Navigator.pushNamed(context, "/howto");
-        },
-      ),
     ];
     List<Widget> employeeSections = [
       ListTile(
@@ -198,19 +192,19 @@ class _CustomDrawer extends State<CustomDrawer>
           Navigator.pushNamed(context, "/");
         },
       ),
-      ListTile(
-        title: const Text('Review Orders'),
-        onTap: () {
-          if (currentUser?.employee?.status == "Pending Approval") {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Your employee status is still pending approval'))
-            );
-          } else {
-            Navigator.pushNamed(context, "/review_orders");
-          }
-        },
-      ),
+      // ListTile(
+      //   title: const Text('Review Orders'),
+      //   onTap: () {
+      //     if (currentUser?.employee?.status == "Pending Approval") {
+      //       Navigator.pop(context);
+      //       ScaffoldMessenger.of(context).showSnackBar(
+      //           const SnackBar(content: Text('Your employee status is still pending approval'))
+      //       );
+      //     } else {
+      //       Navigator.pushNamed(context, "/review_orders");
+      //     }
+      //   },
+      // ),
       ListTile(
         title: const Text('Active Assignment'),
         onTap: () {
@@ -222,12 +216,6 @@ class _CustomDrawer extends State<CustomDrawer>
           } else {
             Navigator.pushNamed(context, "/active_assignment");
           }
-        },
-      ),
-      ListTile(
-        title: const Text('How to'),
-        onTap: () {
-          Navigator.pushNamed(context, "/howto");
         },
       ),
     ];

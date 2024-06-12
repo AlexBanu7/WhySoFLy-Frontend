@@ -59,7 +59,7 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
         if (response.statusCode >= 200 && response.statusCode < 300) {
           var response = await session_requests.post(
             '/identity/userInfo',
-            json.encode(currentUser?.email??""),
+            json.encode(currentUser?.userName??""),
           );
           if (response.statusCode >= 200 && response.statusCode < 300) {
             // Parse the JSON response body into a Dart object
@@ -74,6 +74,7 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
             currentUser = User(
                 email: jsonResponse['user']['email'],
                 role: jsonResponse['role'],
+                userName: jsonResponse['user']['userName'],
                 employee: employee,
                 market: jsonResponse['market']
             );

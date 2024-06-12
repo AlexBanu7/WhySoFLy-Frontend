@@ -39,7 +39,7 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
     await Future.delayed(const Duration(seconds: 1), () async {
       var response = await session_requests.post(
         '/identity/userInfo',
-        json.encode(currentUser?.email),
+        json.encode(currentUser?.userName),
       );
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final jsonResponse = json.decode(response.body);
@@ -47,6 +47,7 @@ class _ActiveAssignmentPage extends State<ActiveAssignmentPage>
         currentUser = User(
           email: jsonResponse['user']['email'],
           role: jsonResponse['role'],
+          userName: jsonResponse['user']['userName'],
         );
         Employee employee = Employee(
           id: jsonResponse['employee']['id'],

@@ -46,14 +46,14 @@ class _ExpandableElementState extends State<ExpandableCategory> {
                   color: Colors.white,
                   border: Border.all(
                     color: Colors.black, // Border color
-                    width: 3, // Border width
+                    width: 0, // Border width
                   ),
                   borderRadius: BorderRadius.circular(50),
                 ),
                 alignment: Alignment.center,
                 padding: _isExpanded ? widget.leftSided? EdgeInsets.only(left: 40) : EdgeInsets.only(right: 40): EdgeInsets.zero,
                 child: Text(
-                  widget.category.name,
+                  _isExpanded ? widget.category.name : "",
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
               ),
@@ -65,10 +65,18 @@ class _ExpandableElementState extends State<ExpandableCategory> {
               onTap: _toggleExpand,
               child: Container(
                 decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                   color: hexToColor("#f5f5dc"),
                   border: Border.all(
                     color: Colors.black, // Border color
-                    width: 4, // Border width
+                    width: 0, // Border width
                   ),
                   borderRadius: BorderRadius.circular(50),
                 ),

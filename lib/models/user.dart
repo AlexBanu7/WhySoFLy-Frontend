@@ -6,6 +6,7 @@ class User {
   String role;
   Market? market;
   Employee? employee;
+  String userName;
 
-  User({required this.email, required this.role, this.market, this.employee});
+  User({required this.email, required this.role, this.market, this.employee, required this.userName});
 }

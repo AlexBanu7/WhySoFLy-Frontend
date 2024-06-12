@@ -57,6 +57,7 @@ class _LoginDialog extends State<LoginDialog>
         currentUser = User(
           email: jsonResponse['user']['email'],
           role: jsonResponse['role'],
+          userName: jsonResponse['user']['userName'],
         );
         if (jsonResponse["employee"] != null) {
           Employee employee = Employee(
@@ -141,7 +142,7 @@ class _LoginDialog extends State<LoginDialog>
             children: <Widget>[
               TextField(
                 controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Username'),
               ),
               const SizedBox(height: 16.0),
               TextField(

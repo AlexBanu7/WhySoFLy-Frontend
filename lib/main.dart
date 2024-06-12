@@ -22,6 +22,7 @@ import 'package:uuid/uuid.dart';
 
 import 'admin_screens/manage_markets/manage_markets.dart';
 import 'customer_screens/order/category_order.dart';
+import 'customer_screens/past_orders/past_orders.dart';
 import 'employee_screens/active_assignment/active_assignment.dart';
 import 'employee_screens/review_orders/review_orders.dart';
 
@@ -84,6 +85,7 @@ class _MyAppState extends State<MyApp> {
         '/active_assignment': (context) => const ActiveAssignmentPage(),
         '/review_orders': (context) => const ReviewOrdersPage(),
         '/manage_markets': (context) => const ManageMarketsPage(),
+        '/past_orders': (context) => const PastOrdersPage(),
       },
     );
   }

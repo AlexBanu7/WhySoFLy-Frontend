@@ -49,12 +49,29 @@ class _SignupDialog extends State<SignupDialog>
           }),
         );
         if (response.statusCode >= 200 && response.statusCode < 300) {
-          // Parse the JSON response body into a Dart object
-          Navigator.pushNamed(context, "/");
-          const snackBar = SnackBar(
-            content: Text('Account created! You may log in.'),
+          var response = await session_requests.patch(
+            '/identity/userName',
+            json.encode({
+              'email': _email,
+              'newUserName': _email.split('@')[0]
+            }),
           );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          if (response.statusCode >= 200 && response.statusCode < 300) {
+            Navigator.pushNamed(context, "/");
+            var snackBar = SnackBar(
+              content: Text('Account created! Your Username is "${_email.split('@')[0]}"'),
+              duration: const Duration(days: 1), // Set a long duration
+              action: SnackBarAction(
+                label: 'Close',
+                onPressed: () {
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          } else {
+            // If the request was not successful, handle the error
+            throw Exception('Request failed with status: ${response.statusCode} and message ${response.body}');
+          }
         } else {
           // If the request was not successful, handle the error
           throw Exception('Request failed with status: ${response.statusCode}');

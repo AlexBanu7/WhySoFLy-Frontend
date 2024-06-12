@@ -41,6 +41,12 @@ class Session {
     return response;
   }
 
+  Future<http.Response> patch(String path, dynamic data) async {
+    http.Response response = await http.patch(Uri.parse(base_url+path), body: data, headers: headers);
+    updateCookie(response);
+    return response;
+  }
+
   Future<http.Response> delete(String path) async {
     http.Response response = await http.delete(Uri.parse(base_url+path), headers: headers);
     updateCookie(response);

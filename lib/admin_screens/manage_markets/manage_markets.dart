@@ -45,7 +45,7 @@ class _ManageMarketsPage extends State<ManageMarketsPage>
     });
 
     var response = await session_requests.get(
-      '/api/Market',
+      '/api/Market/Untempered',
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
