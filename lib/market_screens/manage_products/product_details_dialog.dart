@@ -91,6 +91,8 @@ class _ProductDetailsDialog extends State<ProductDetailsDialog>
       ),
       content: product != null ?
         Container(
+          // height to match content
+          height: MediaQuery.of(context).size.height * 0.6,
           width: MediaQuery.of(context).size.width,
           child: Center(
             child:ListView(

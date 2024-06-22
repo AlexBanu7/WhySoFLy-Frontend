@@ -74,7 +74,6 @@ class _AddToCartDialog extends State<AddToCartDialog>
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                print("Here I am");
                 if (_formKey.currentState!.validate()) {
                   if (cartService.backendId != null){
                     print("Adding to backend cart");

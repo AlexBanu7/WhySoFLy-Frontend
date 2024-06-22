@@ -57,38 +57,13 @@ class _RegisterEmployeePage extends State<RegisterEmployeePage>
           }),
         );
         if (response.statusCode >= 200 && response.statusCode < 300) {
-          var response = await session_requests.post(
-            '/identity/userInfo',
-            json.encode(currentUser?.userName??""),
+          const snackBar = SnackBar(
+            content: Text('Your request has been sent! You will be notified when it is approved.'),
           );
-          if (response.statusCode >= 200 && response.statusCode < 300) {
-            // Parse the JSON response body into a Dart object
-            final jsonResponse = json.decode(response.body);
-            Employee employee = Employee(
-              id: jsonResponse['employee']['id'],
-              name: jsonResponse['employee']['name'],
-              status: jsonResponse['employee']['status'],
-              ordersDone: jsonResponse['employee']['ordersDone'],
-              marketName: jsonResponse['employee']['marketName'],
-            );
-            currentUser = User(
-                email: jsonResponse['user']['email'],
-                role: jsonResponse['role'],
-                userName: jsonResponse['user']['userName'],
-                employee: employee,
-                market: jsonResponse['market']
-            );
-            const snackBar = SnackBar(
-              content: Text('Your request has been sent! You will be notified when it is approved.'),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            setState(() {
-              _loading = false;
-            });
-          } else {
-            // If the request was not successful, handle the error
-            throw Exception('Request failed with status: ${response.statusCode}');
-          }
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          setState(() {
+            _loading = false;
+          });
         } else {
           // If the request was not successful, handle the error
           throw Exception('Request failed with status: ${response.statusCode}');

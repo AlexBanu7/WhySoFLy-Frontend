@@ -30,7 +30,7 @@ class _MapScreenState extends State<MapScreen> {
   Set<Marker> _markers = {};
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(45.7489, 21.23),
+    target: LatLng(45.7489, 21.23), // Timisoara
     zoom: 13,
   );
 
@@ -67,11 +67,14 @@ class _MapScreenState extends State<MapScreen> {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       var body = json.decode(response.body);
-      print(body);
       Set<Marker> newMarkers = {};
       for (var market_in_body in body) {
-        LatLng location = LatLng(double.tryParse(market_in_body['latitude'])??0, double.tryParse(market_in_body['longitude'])??0);
-        Market market = Market(id: market_in_body['id'], name: market_in_body['name'], location: location);
+        LatLng location = LatLng(
+            double.tryParse(market_in_body['latitude'])??0,
+            double.tryParse(market_in_body['longitude'])??0
+        );
+        Market market = Market(id: market_in_body['id'],
+            name: market_in_body['name'], location: location);
         newMarkers.add(
             Marker(
               markerId: MarkerId(market.location.toString()),

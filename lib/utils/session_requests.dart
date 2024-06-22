@@ -12,7 +12,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class Session {
   Map<String, String> headers = {"Content-Type": "application/json"};
 
-  static String ip = '192.168.0.163:5229';
+  static String ip = '<your_ipv4_here>:5229';
   static String base_url = 'http://' + ip;
   static String ws_url = 'ws://' + ip + '/ws';
 

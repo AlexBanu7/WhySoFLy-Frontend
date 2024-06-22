@@ -45,8 +45,6 @@ class _LoginDialog extends State<LoginDialog>
     );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      // Start Fresh
-      cartService.clearCart();
       var response = await session_requests.post(
         '/identity/userInfo',
         json.encode(email),

@@ -38,9 +38,7 @@ class CartService {
     if (computeVolumeLeft() - quantity * product.volumePerQuantity < 0){
       throw Exception("Cannot add the item! Volume will be exceeded");
     }
-    // Add to cart
-    // If cart has a backendId, add in backend instead
-    print("Adding to local cart");
+    // Check if the product is not already mapped to a cart item
     if (!cartitems.any((cartitem) => cartitem.productId == product.id)) {
       CartItem cartItem = CartItem(
           id:Random().nextInt(9999),

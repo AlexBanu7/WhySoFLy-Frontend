@@ -49,6 +49,7 @@ class _EmployeeConfirmationDialog extends State<EmployeeConfirmationDialog>
                 ElevatedButton(
                   onPressed: () {
                     widget.onConfirm();
+                    Navigator.pop(context);
                   },
                   child: const Text('Yes'),
                 ),

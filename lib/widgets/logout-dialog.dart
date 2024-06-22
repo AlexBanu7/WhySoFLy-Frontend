@@ -29,14 +29,14 @@ class _LogoutDialog extends State<LogoutDialog>
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       currentUser = null;
-      // final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-      // themeProvider.setTheme(ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      //   useMaterial3: true,
-      // ));
+      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+      themeProvider.setTheme(ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
+      ));
       cartService.clearCart();
       session_requests.closeChannel();
-      Navigator.pushNamed(context, "/");
+      nav.refreshAndPushNamed(context, []);
       widget.onUpdate();
     } else {
       // If the request was not successful, handle the error

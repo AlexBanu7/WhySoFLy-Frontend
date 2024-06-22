@@ -103,7 +103,17 @@ class _CustomDrawer extends State<CustomDrawer>
       ListTile(
         title: const Text('Past Orders'),
         onTap: () {
-          Navigator.pushNamed(context, "/past_orders");
+          if (currentUser != null){
+            Navigator.pushNamed(context, "/past_orders");
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const LoginDialog();
+              },
+            );
+          }
+
         },
       ),
       ListTile(
