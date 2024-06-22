@@ -19,6 +19,39 @@ class EmployeeCardDialog extends StatefulWidget {
 class _EmployeeCardDialog extends State<EmployeeCardDialog>
     with SingleTickerProviderStateMixin{
 
+  bool _loading = true;
+  int finishedOrders = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getFinishedCarts();
+  }
+
+  Future<void> getFinishedCarts() async {
+    setState(() {
+      _loading = true;
+    });
+    var response = await session_requests.post(
+        "/api/Cart/Finished/ByEmployeeId",
+        json.encode(widget.employee.id)
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      var body = json.decode(response.body);
+      setState(() {
+        finishedOrders = body.length;
+      });
+    } else {
+      // If the request was not successful, handle the error
+      throw Exception('Request failed with status: ${response
+          .statusCode} and message ${response.body}');
+    }
+    setState(() {
+      _loading = false;
+    });
+  }
+
   Future<void> _onConfirmRemove() async {
     Map<String, dynamic> data = {
       'employeeId': widget.employee.id,
@@ -74,7 +107,8 @@ class _EmployeeCardDialog extends State<EmployeeCardDialog>
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: _loading? [const Center(child: CircularProgressIndicator())]
+        :<Widget>[
           Text(
             "Status: ${widget.employee.status}",
             textAlign: TextAlign.center,
@@ -84,7 +118,7 @@ class _EmployeeCardDialog extends State<EmployeeCardDialog>
           ),
           const SizedBox(height: 16.0),
           Text(
-            "Orders Finished: ${widget.employee.ordersDone}",
+            "Orders Finished: ${finishedOrders}",
             textAlign: TextAlign.center,
             style: const TextStyle(
                 fontSize: 20
